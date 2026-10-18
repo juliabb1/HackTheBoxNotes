@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Machines/Trick.md",
+                "file": "Machines/Reset.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Trick"
+              "title": "Reset"
             }
           }
         ]
@@ -190,6 +190,7 @@
   },
   "active": "9687c7abc6ad41be",
   "lastOpenFiles": [
+    "Machines/Trick.md",
     "Machines/Reset.md",
     "Techniques/fail2ban Abuse.md",
     "Techniques/NTLM.md",
@@ -218,7 +219,6 @@
     "Basics/smb.pdf",
     "etc-shadow.md",
     "basics/Linux Standard-Pfade.md.tmp.34072.95da6df303c1",
-    "Machines/Trick.md",
     "Techniques/Mail and Log Poisoning.md",
     "Techniques/Hash Cracking.md",
     "Techniques/Local File Inclusion.md",
