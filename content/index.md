@@ -6,7 +6,7 @@ Persönliche Notizen zu HackTheBox-Maschinen, Techniken, Tools und Linux-Grundla
 
 > [!warning] Hinweis
 > Flags und die Attacker-IP sind bewusst durch Platzhalter ersetzt.
-> Die Inhalte basieren auf eigene Notizen und wurden mithilfe von KI strukturiert und anschließend von mir geprüft.
+> Die Inhalte basieren auf eigene Notizen und wurden mithilfe von KI strukturiert und zum besseren Verständnis umformuliert, anschließend von mir geprüft.
 
 
 ## Struktur
