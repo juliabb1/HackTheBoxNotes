@@ -188,8 +188,10 @@
       "bases:Create new base": false
     }
   },
-  "active": "9687c7abc6ad41be",
+  "active": "2fda95edb12c5060",
   "lastOpenFiles": [
+    "index.md",
+    "index.md.tmp.34072.f041d0cd6ea0",
     "Machines/Trick.md",
     "Machines/Reset.md",
     "Techniques/fail2ban Abuse.md",
@@ -224,8 +226,6 @@
     "Techniques/Local File Inclusion.md",
     "Techniques/Local File Inclusion.md.tmp.34072.b49b9536af87",
     "Tools/xfreerdp.md",
-    "Tools/nmap.md",
-    "Tools/netcat.md",
-    "Untitled.base"
+    "Tools/nmap.md"
   ]
 }

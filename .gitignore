@@ -1,0 +1,15 @@
+# Quartz / Node build artifacts
+node_modules/
+public/
+.quartz-cache/
+tsconfig.tsbuildinfo
+prof/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Obsidian: volatile per-device state (Rest von .obsidian bleibt getrackt)
+content/.obsidian/workspace.json
+content/.obsidian/workspace-mobile.json
+content/.obsidian/cache
