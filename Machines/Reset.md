@@ -10,7 +10,7 @@ techniques: [password-reset, log-poisoning, lfi, reverse-shell, r-services, tmux
 | OS                 | Linux                                       |
 | Difficulty         | Easy                                        |
 | Box IP             | `10.129.234.130` (ändert sich bei Redeploy) |
-| Attacker IP (tun0) | `<attacker-ip>`                               |
+| Attacker IP (tun0) | `<attacker-ip>`                             |
 
 > [!info] Kill Chain
 > [[Password Reset Abuse]] → Admin-Dashboard → [[Mail and Log Poisoning|Log Poisoning]] (via [[Local File Inclusion|LFI]]) → RCE → [[Reverse Shell]] → [[R-Services Abuse]] (rlogin als `sadm`) → [[tmux Hijacking]] (PW-Leak) → [[Sudo Abuse]] (nano) → **root**
