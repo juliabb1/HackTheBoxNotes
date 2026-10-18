@@ -4,7 +4,7 @@ aliases: [nc, Netcat]
 ---
 # netcat (nc)
 
-> Mini-Tool für rohe TCP/UDP-Verbindungen. Wartet, bis das Opfer sich meldet → dessen Shell landet in deinem Fenster ([[Reverse Shell]]).
+> Mini-Tool für rohe TCP/UDP-Verbindungen. Wartet, bis das Opfer sich meldet → dessen Shell landet in deinem Fenster (Reverse Shell).
 
 ## Verwendung
 ```bash

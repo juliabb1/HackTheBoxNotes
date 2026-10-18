@@ -26,6 +26,6 @@ dig axfr <domain> @<ziel-ip>
 - **Dicht** → `Transfer failed.`
 
 > [!note] DNS ≠ Webserver
-> Der Zone Transfer zeigt nur, was der **DNS** kennt. Ein vHost kann im Webserver (`server_name`) konfiguriert sein **ohne** DNS-Eintrag → nur über die Webserver-Config auffindbar (siehe [[Trick]]).
+> Der Zone Transfer zeigt nur, was der **DNS** kennt. Ein vHost kann im Webserver (`server_name`) konfiguriert sein **ohne** DNS-Eintrag → nur über die Webserver-Config auffindbar.
 
 Tool: [[dig]]

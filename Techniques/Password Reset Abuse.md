@@ -22,6 +22,5 @@ new_password: 24bc0464
 > [!note] Warum das klappt
 > Entwickler-Bug: der Reset-Flow soll das Passwort nur setzen/mailen, rendert es aber zusätzlich in die Seite. Die Mail kommt nie an → man liest es direkt mit.
 
-Danach meist Zugriff auf ein Dashboard → oft weitergeht mit [[Local File Inclusion|LFI]] / [[Mail Poisoning|Log Poisoning]].
 
 Tool: [[curl]]

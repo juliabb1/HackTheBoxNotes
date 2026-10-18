@@ -19,4 +19,4 @@ dig axfr <domain> @<ziel-ip>   # Zone Transfer
 | `dig google.com MX`           | Mailserver der Domain                 |
 | `dig google.com NS`           | zuständige DNS-Server                 |
 | `dig @8.8.8.8 google.com`     | frag gezielt *diesen* Server (`@`)    |
-| `dig axfr trick.htb @ziel-ip` | **Zone Transfer** → [[Zone Transfer]] |
+| `dig axfr trick.htb @ziel-ip` | **Zone Transfer**                     |

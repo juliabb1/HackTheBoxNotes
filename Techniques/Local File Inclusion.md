@@ -20,14 +20,16 @@ aliases: [LFI]
 | `/etc/passwd`| absoluter Pfad (falls kein Traversal nötig)                       |
 
 ## Nützliche Zieldateien
-| Datei                      | Info                          |
-| -------------------------- | ----------------------------- |
-| `/etc/passwd`              | alle User (`name:x:UID:GID:…`)|
-| `/etc/nginx/sites-enabled/default` | vHosts (`server_name`)|
-| `/var/mail/<user>`         | Mailbox → siehe [[Mail Poisoning]] |
-| `/var/log/...`             | Logs → Log Poisoning          |
+| Datei                              | Info                                    |
+| ---------------------------------- | --------------------------------------- |
+| `/etc/passwd`                      | alle User → [[etc-passwd]]              |
+| `/etc/nginx/sites-enabled/default` | vHosts (`server_name`)                  |
+| `/var/mail/<user>`                 | Mailbox → Mail/Log Poisoning            |
+| `/var/log/apache2/access.log`      | Apache-Log → poisonbar (User-Agent)     |
+
+=> Vollständige Liste + warum diese Pfade immer gleich liegen: [[Linux Standard-Pfade]].
 
 ## LFI → RCE
-Wenn eine einbindbare Datei **steuerbaren Inhalt** hat (Mail, Log), kann man dort PHP platzieren → wird beim Einbinden ausgeführt → [[Mail Poisoning]].
+Wenn eine einbindbare Datei **steuerbaren Inhalt** hat (Mail, Log), kann man dort PHP platzieren → wird beim Einbinden ausgeführt (Mail/Log Poisoning).
 
 Tool: [[curl]]

@@ -3,7 +3,7 @@ tags: [tool, network]
 ---
 # telnet
 
-> Verbindet sich zu einem **Port** und schickt **rohen Text**. [[netcat]] macht dasselbe moderner (`nc <ip> <port>`).
+> Verbindet sich zu einem **Port** und schickt **rohen Text**. netcat macht dasselbe moderner (`nc <ip> <port>`).
 
 ## Verwendung
 ```bash
@@ -25,4 +25,4 @@ telnet <ip> <port>
 | `.` (alleine) | „Mail fertig"                        |
 | `QUIT`        | Verbindung beenden                   |
 
-=> Anwendung: [[Mail Poisoning]]
+=> Anwendung: Mail/Log Poisoning

@@ -23,4 +23,4 @@ smbclient //<ziel>/share -N -c 'put datei.lnk'  # Datei hochladen (one-shot)
 ## Im Share
 `ls`, `get <datei>`, `put <datei>`, `cd <ordner>`
 
-=> Technik: [[SMB Enumeration]]
+=> Technik: SMB Enumeration

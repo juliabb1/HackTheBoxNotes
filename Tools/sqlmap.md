@@ -3,7 +3,7 @@ tags: [tool, exploitation, sqli]
 ---
 # sqlmap
 
-> Testet automatisch auf [[SQL Injection]] und liest DB oder Dateien aus.
+> Testet automatisch auf SQL Injection und liest DB oder Dateien aus.
 > Input: **welche Anfrage** angreifen + **welcher Parameter** verdächtig.
 
 ## Verwendung

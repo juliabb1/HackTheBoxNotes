@@ -21,6 +21,6 @@ responder -I tun0 -P
 
 ## Output
 - Gefangene Hashes landen unter `/usr/share/responder/logs/` (und im Terminal).
-- Format = **NetNTLMv2** → direkt in [[Hash Cracking|john/hashcat]].
+- Format = **NetNTLMv2** → direkt in john/hashcat.
 
-=> Technik: [[NTLM Hash Leak]]
+=> Technik: NTLM Hash Leak

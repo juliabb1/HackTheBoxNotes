@@ -15,8 +15,8 @@ aliases: [NTLMv2]
 => Übertragen wird nur ein **Hash**, nie das Passwort.
 
 ## Warum angreifbar?
-- Der mitgeschnittene **NTLMv2-Response** (Challenge + Hash) lässt sich **offline cracken** → [[Hash Cracking]].
-- Windows authentifiziert sich teils **automatisch** gegen UNC-Pfade (`\\host\share`) → [[NTLM Hash Leak]].
+- Der mitgeschnittene **NTLMv2-Response** (Challenge + Hash) lässt sich **offline cracken** → Hash Cracking.
+- Windows authentifiziert sich teils **automatisch** gegen UNC-Pfade (`\\host\share`) → NTLM Hash Leak.
 
 ## Begriffe
 | Begriff      | Bedeutung                                               |

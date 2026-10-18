@@ -24,7 +24,7 @@ enum4linux-ng <ziel>                  # User, Gruppen, Shares, Policy
 ```
 
 ## Worauf achten
-- **beschreibbare** Shares → Datei ablegen (z.B. [[NTLM Hash Leak|.lnk]])
+- **beschreibbare** Shares → Datei ablegen (z.B. `.lnk` für NTLM Hash Leak)
 - Config-/Backup-Dateien, Skripte, Passwörter im Klartext
 
 Tools: [[smbclient]], [[nmap]]

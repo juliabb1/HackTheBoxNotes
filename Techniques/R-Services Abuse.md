@@ -14,18 +14,16 @@ aliases: [rlogin, rsh, R-Services]
 ```
 
 ## Trust-Mechanismus
-| Datei                | Scope       | Wirkung                                          |
-| -------------------- | ----------- | ------------------------------------------------ |
-| `/etc/hosts.equiv`   | systemweit  | vertrauenswürdige Hosts/User für alle Accounts   |
-| `~/.rhosts`          | pro User    | vertrauenswürdige Hosts/User für diesen Account  |
-
+| Datei              | Scope      | Wirkung                                         |
+| ------------------ | ---------- | ----------------------------------------------- |
+| `/etc/hosts.equiv` | systemweit | vertrauenswürdige Hosts/User für alle Accounts  |
+| `~/.rhosts`        | pro User   | vertrauenswürdige Hosts/User für diesen Account |
 - Einträge `+ +` (jeder Host, jeder User) oder ein konkreter `+ <user>` erlauben passwortlosen Login.
 
 ```bash
 cat /etc/hosts.equiv
 # + sadm        <- user sadm darf sich ohne Passwort einloggen
 ```
-
 ## Ausnutzen
 > [!info] Bedingung
 > Der **lokale** User (auf Kali), über den man einloggt, muss **denselben Namen** tragen wie der Ziel-User.

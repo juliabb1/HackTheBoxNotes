@@ -21,4 +21,4 @@ john --show hash.txt                                         # geknackte zeigen
 | `--show`           | bereits geknackte anzeigen    |
 | `--rules`          | Mutations-Regeln anwenden     |
 
-=> Technik + Modi-Tabelle: [[Hash Cracking]]
+=> Technik + Modi-Tabelle: Hash Cracking

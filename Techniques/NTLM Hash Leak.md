@@ -4,13 +4,13 @@ aliases: [Forced Authentication, LNK Hash Leak]
 ---
 # NTLM Hash Leak (Forced Authentication)
 
-> Windows gegen einen **UNC-Pfad zu dir** (`\\<attacker-ip>\share`) authentifizieren lassen → es schickt automatisch den [[NTLM|NTLMv2]]-Hash, den du abfängst und crackst.
+> Windows gegen einen **UNC-Pfad zu dir** (`\\<attacker-ip>\share`) authentifizieren lassen → es schickt automatisch den NTLMv2-Hash, den du abfängst und crackst.
 
 ## Prinzip
 1. Datei/Ressource verweist auf `\\<attacker-ip>\...`
 2. Opfer löst die Auflösung aus (Öffnen, **Vorschau**, teils nur Rechtsklick).
 3. Windows authentifiziert sich automatisch → Hash geht an deinen Listener ([[Responder]]).
-4. Hash offline cracken → [[Hash Cracking]].
+4. Hash offline cracken → Hash Cracking.
 
 ## Vektoren
 | Typ        | Auslöser                                             |

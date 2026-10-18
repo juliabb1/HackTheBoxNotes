@@ -32,8 +32,8 @@ curl http://ziel.htb/dashboard.php \
 | `-o datei`         | Antwort speichern                      |
 
 > [!tip] `-b PHPSESSID` – authentifizierte Requests
-> Nach einem Login hält der Server die Session über das Cookie `PHPSESSID`. Mit `-b "PHPSESSID=<wert>"` sprichst du geschützte Seiten (Dashboard etc.) an, als wärst du eingeloggt – den Wert aus **DevTools → Application/Storage → Cookies** oder dem Login-Response kopieren. Zentral für [[Mail Poisoning|Log Poisoning]].
+> Nach einem Login hält der Server die Session über das Cookie `PHPSESSID`. Mit `-b "PHPSESSID=<wert>"` sprichst du geschützte Seiten (Dashboard etc.) an, als wärst du eingeloggt – den Wert aus **DevTools → Application/Storage → Cookies** oder dem Login-Response kopieren. Zentral für Log Poisoning.
 
 > [!tip] LFI-Kombi
 > `curl -G "URL" --data-urlencode "page=..." --data-urlencode "cmd=..."`
-> → nie wieder `%20`, `&` oder Quotes von Hand kodieren. Siehe [[Local File Inclusion]].
+> → nie wieder `%20`, `&` oder Quotes von Hand kodieren. (LFI)

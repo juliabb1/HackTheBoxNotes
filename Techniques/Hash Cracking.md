@@ -31,4 +31,4 @@ hashcat -m 0 hash.txt rockyou.txt       # 0 = MD5
 /usr/share/wordlists/rockyou.txt
 /usr/share/wordlists/seclists/Passwords/Leaked-Databases/rockyou.txt
 ```
-=> Angewendet auf [[NTLM]]-Hashes aus [[Responder]].
+=> Angewendet auf NTLM-Hashes aus [[Responder]].

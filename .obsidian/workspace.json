@@ -4,21 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "8886e1537a38469c",
+        "id": "c501d871abd16cb2",
         "type": "tabs",
         "children": [
           {
-            "id": "dc29bda05d205434",
+            "id": "9687c7abc6ad41be",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Machines/Reset.md",
+                "file": "Machines/Trick.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Reset"
+              "title": "Trick"
             }
           }
         ]
@@ -188,36 +188,44 @@
       "bases:Create new base": false
     }
   },
-  "active": "2fda95edb12c5060",
+  "active": "9687c7abc6ad41be",
   "lastOpenFiles": [
-    "Tools/rlogin.md",
-    "Techniques/Sudo Abuse.md",
-    "Techniques/tmux Hijacking.md",
-    "Techniques/R-Services Abuse.md",
-    "Techniques/Password Reset Abuse.md",
-    "Techniques/Reverse Shell.md",
     "Machines/Reset.md",
-    "Machines/Trick.md",
-    "Techniques/SQL Injection.md",
+    "Techniques/fail2ban Abuse.md",
+    "Techniques/NTLM.md",
+    "Basics/sql_injection.pdf",
+    "Basics/tcp.pdf",
     "Techniques/Zone Transfer.md",
+    "Techniques/NTLM Hash Leak.md.tmp.34072.2cc2806c9782",
+    "Techniques/Sudo Abuse.md",
+    "Techniques/SQL Injection.md",
+    "Techniques/Reverse Shell.md",
+    "Techniques/R-Services Abuse.md",
+    "Techniques/NTLM Hash Leak.md",
+    "Techniques/Password Reset Abuse.md",
+    "Untitled.canvas",
+    "Techniques/tmux Hijacking.md",
+    "Basics/Linux Standard-Pfade.md.tmp.34072.db823cbaf2a1",
+    "Basics/Linux Standard-Pfade.md.tmp.34072.25cf0a41c617",
+    "Techniques/SUID Abuse.md",
+    "Tools/rlogin.md",
+    "Basics/etc-passwd.md",
+    "Basics/File Descriptors.md",
+    "Tools/grep.md",
+    "Basics/Dateirechte und chmod.md",
+    "Basics/Linux Standard-Pfade.md",
+    "Basics/mariaDB.pdf",
+    "Basics/smb.pdf",
+    "etc-shadow.md",
+    "basics/Linux Standard-Pfade.md.tmp.34072.95da6df303c1",
+    "Machines/Trick.md",
+    "Techniques/Mail and Log Poisoning.md",
+    "Techniques/Hash Cracking.md",
+    "Techniques/Local File Inclusion.md",
+    "Techniques/Local File Inclusion.md.tmp.34072.b49b9536af87",
     "Tools/xfreerdp.md",
     "Tools/nmap.md",
     "Tools/netcat.md",
-    "Tools/dig.md",
-    "Tools/curl.md",
-    "Techniques/NTLM.md",
-    "Techniques/NTLM Hash Leak.md",
-    "Techniques/SMB Enumeration.md",
-    "Techniques/SUID Abuse.md",
-    "Techniques/Local File Inclusion.md",
-    "Techniques/fail2ban Abuse.md",
-    "Machines/LinkItUp.md",
-    "Untitled.base",
-    "2026-10-17.md",
-    "Tools/Responder.md",
-    "Techniques/Mail Poisoning.md",
-    "Tools/sqlmap.md",
-    "Unbenannt.base",
-    "Templates"
+    "Untitled.base"
   ]
 }

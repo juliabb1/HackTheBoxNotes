@@ -22,4 +22,4 @@ xfreerdp3 /v:<host> /u:<user> /p:<password> /cert:ignore
 | `/dynamic-resolution` | Fenstergröße anpassen         |
 
 > [!tip] Pass-the-Hash
-> Statt `/p:` geht oft `/pth:<NT-Hash>` – Login ohne Klartext (siehe [[NTLM]]).
+> Statt `/p:` geht oft `/pth:<NT-Hash>` – Login ohne Klartext (NTLM).
