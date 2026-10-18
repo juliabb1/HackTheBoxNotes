@@ -12,6 +12,6 @@ Persönliche Notizen zu HackTheBox-Maschinen, Techniken, Tools und Linux-Grundla
 - **Machines** — Writeups pro Box (Kill Chain → Schritte)
 - **Techniques** — Angriffsmethoden (LFI, Log Poisoning, Sudo Abuse, …)
 - **Tools** — Werkzeuge (curl, nmap, grep, …)
-- **basics** — Linux-Grundlagen (etc-passwd, chmod, File Descriptors, Standard-Pfade)
+- **Basics** — Linux-Grundlagen (etc-passwd, chmod, File Descriptors, Standard-Pfade)
 
 Navigiere über den Explorer links, die Suche oben, oder den Graphen rechts.
