@@ -6,6 +6,8 @@ Persönliche Notizen zu HackTheBox-Maschinen, Techniken, Tools und Linux-Grundla
 
 > [!warning] Hinweis
 > Lernnotizen. Flags und die Attacker-IP sind bewusst durch Platzhalter ersetzt.
+> Die Inhalte basieren auf eigene Notizen und wurden mithilfe von KI strukturiert und anschließend von mir geprüft.
+
 
 ## Struktur
 
@@ -13,5 +15,3 @@ Persönliche Notizen zu HackTheBox-Maschinen, Techniken, Tools und Linux-Grundla
 - **Techniques** — Angriffsmethoden (LFI, Log Poisoning, Sudo Abuse, …)
 - **Tools** — Werkzeuge (curl, nmap, grep, …)
 - **Basics** — Linux-Grundlagen (etc-passwd, chmod, File Descriptors, Standard-Pfade)
-
-Navigiere über den Explorer links, die Suche oben, oder den Graphen rechts.
