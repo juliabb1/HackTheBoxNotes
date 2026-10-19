@@ -1,16 +1,29 @@
 ---
 tags: [technique, windows, credential-access]
-aliases: [Forced Authentication, LNK Hash Leak]
+aliases: [Forced Authentication, LNK Hash Leak, NTLM, NTLMv2]
 ---
 # NTLM Hash Leak (Forced Authentication)
 
 > Windows gegen einen **UNC-Pfad zu dir** (`\\<attacker-ip>\share`) authentifizieren lassen → es schickt automatisch den NTLMv2-Hash, den du abfängst und crackst.
 
+## Hintergrund: NTLM
+NTLM ist das Windows-Verfahren, mit dem ein System beim Ressourcen-Zugriff (SMB-Shares, RDP, Windows-Auth-Websites) beweist, **wer der Nutzer ist**. Ablauf (Challenge-Response):
+1. Client sendet **Username** an den Server.
+2. Server schickt eine **zufällige Challenge** zurück.
+3. Client verschlüsselt die Challenge mit seinem **Passwort-Hash** → NTLMv2-Response.
+4. Server prüft die Antwort.
+
+=> Über die Leitung geht nur der **Response** (Challenge + Hash-Berechnung), nie das Passwort.
+
+Angriffsfläche für diese Technik:
+- Der mitgeschnittene **NTLMv2-Response** lässt sich **offline cracken** → [[Hash Cracking]] (Format `netntlmv2`).
+- Windows authentifiziert sich teils **automatisch** gegen UNC-Pfade (`\\host\share`) — genau das wird hier erzwungen.
+
 ## Prinzip
 1. Datei/Ressource verweist auf `\\<attacker-ip>\...`
 2. Opfer löst die Auflösung aus (Öffnen, **Vorschau**, teils nur Rechtsklick).
 3. Windows authentifiziert sich automatisch → Hash geht an deinen Listener ([[Responder]]).
-4. Hash offline cracken → Hash Cracking.
+4. Hash offline cracken → [[Hash Cracking]].
 
 ## Vektoren
 | Typ        | Auslöser                                             |

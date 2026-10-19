@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Machines/Trick.md",
+                "file": "Machines/LinkItUp.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Trick"
+              "title": "LinkItUp"
             }
           }
         ]
@@ -190,11 +190,13 @@
   },
   "active": "9687c7abc6ad41be",
   "lastOpenFiles": [
-    "Machines/Reset.md",
+    "Techniques/NTLM Hash Leak.md",
+    "Techniques/SMB Enumeration.md",
+    "Machines/LinkItUp.md",
     "Machines/Trick.md",
+    "Machines/Reset.md",
     "Techniques/R-Services Abuse.md",
     "Machines/Reset.md.tmp.41764.5f44985c2eac",
-    "Machines/LinkItUp.md",
     "Machines/Reset.md.tmp.41764.3586062d628c",
     "Techniques/Zone Transfer.md",
     "Basics/tcp.pdf",
@@ -219,7 +221,6 @@
     "Techniques/Sudo Abuse.md",
     "Techniques/SQL Injection.md",
     "Techniques/Reverse Shell.md",
-    "Techniques/NTLM Hash Leak.md",
     "Techniques/Password Reset Abuse.md",
     "Untitled.canvas",
     "Techniques/tmux Hijacking.md",

