@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "index.md",
+                "file": "Machines/Reset.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "index"
+              "title": "Reset"
             }
           }
         ]
@@ -190,13 +190,14 @@
   },
   "active": "9687c7abc6ad41be",
   "lastOpenFiles": [
-    "Machines/Reset.md",
     "Machines/LinkItUp.md",
+    "Machines/Trick.md",
+    "index.md",
+    "Machines/Reset.md",
     "dirtyNotes/Reset.md",
     "private/README.md",
     "dirtyNotes/Trick.md",
     "dirtyNotes/LinkItUp.md",
-    "Machines/Trick.md",
     "Techniques/NTLM Hash Leak.md",
     "Techniques/SMB Enumeration.md",
     "Techniques/R-Services Abuse.md",
@@ -219,7 +220,6 @@
     "Basics-tmp/File Descriptors.md",
     "Basics-tmp/etc-passwd.md",
     "Basics-tmp/Dateirechte und chmod.md",
-    "index.md",
     "Techniques/fail2ban Abuse.md",
     "Techniques/NTLM.md",
     "Techniques/Sudo Abuse.md",

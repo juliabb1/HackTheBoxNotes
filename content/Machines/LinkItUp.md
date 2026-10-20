@@ -3,7 +3,7 @@ tags: [htb, windows, easy, writeup]
 cve: none (Mark of the Web, no CVE)
 techniques: [smb-enum, ntlm-leak, hash-cracking]
 ---
-# LinkItUp (HTB)
+# LinkItUp (Windows)
 
 | Field              | Value           |
 | ------------------ | --------------- |
