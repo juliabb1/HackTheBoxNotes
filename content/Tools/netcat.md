@@ -4,24 +4,24 @@ aliases: [nc, Netcat]
 ---
 # netcat (nc)
 
-> Mini-Tool für rohe TCP/UDP-Verbindungen. Wartet, bis das Opfer sich meldet → dessen Shell landet in deinem Fenster (Reverse Shell).
+> A tiny tool for raw TCP/UDP connections. Waits until the victim connects → its shell lands in the local window (reverse shell).
 
-## Verwendung
+## Usage
 ```bash
-nc -lvnp 4444        # Listener (Reverse Shells auffangen)
-nc <ip> <port>       # zu einem Port verbinden
-nc -zv <ip> 80       # Port-Check
+nc -lvnp 4444        # listener (catch reverse shells)
+nc <ip> <port>       # connect to a port
+nc -zv <ip> 80       # port check
 ```
 
 ## Flags
-| Flag | Bedeutung                          |
+| Flag | Meaning                            |
 | ---- | ---------------------------------- |
-| `-l` | listen – lauschen statt verbinden  |
-| `-v` | verbose – Verbindungsstatus        |
-| `-n` | numeric – keine DNS-Auflösung      |
-| `-p` | Port                               |
-| `-z` | nur scannen, keine Daten           |
-| `-u` | UDP statt TCP                      |
+| `-l` | listen – listen instead of connect |
+| `-v` | verbose – connection status        |
+| `-n` | numeric – no DNS resolution        |
+| `-p` | port                               |
+| `-z` | scan only, no data                 |
+| `-u` | UDP instead of TCP                 |
 
-> [!tip] Merkhilfe
-> `-lvnp` = **L**isten **V**erbose **N**umeric **P**ort → Standard-Listener.
+> [!tip] Mnemonic
+> `-lvnp` = **L**isten **V**erbose **N**umeric **P**ort → the standard listener.

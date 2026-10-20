@@ -3,37 +3,37 @@ tags: [tool, network, web]
 ---
 # curl
 
-> Kommandozeilen-Tool, das HTTP-Anfragen verschickt – „Browser ohne Fenster".
+> Command-line tool that sends HTTP requests – "a browser without a window".
 
-## Verwendung
+## Usage
 ```bash
-curl http://ziel.htb                        # GET
-curl -I http://ziel.htb                     # nur Header
-curl -v http://ziel.htb                     # Request+Response komplett
-curl -G http://ziel.htb/index.php --data-urlencode "page=../../etc/passwd"
-curl http://ziel.htb/index.php -H "User-Agent: deinwert"  # Header-Parameter setzen
+curl http://target.htb                        # GET
+curl -I http://target.htb                      # headers only
+curl -v http://target.htb                      # full request+response
+curl -G http://target.htb/index.php --data-urlencode "page=../../etc/passwd"
+curl http://target.htb/index.php -H "User-Agent: yourvalue"  # set a header parameter
 
-# mit Session-Cookie (z.B. nach Login) – Datei per POST-Parameter lesen:
-curl http://ziel.htb/dashboard.php \
+# with a session cookie (e.g. after login) – read a file via a POST parameter:
+curl http://target.htb/dashboard.php \
   -b "PHPSESSID=13vsltn0mhkf744vc9hbb13q6k" \
   --data-urlencode "file=/var/log/apache2/access.log"
 ```
 
 ## Flags
-| Flag               | Bedeutung                              |
+| Flag               | Meaning                                |
 | ------------------ | -------------------------------------- |
-| `-X`               | HTTP-Methode                           |
-| `-d`               | Daten senden (POST-Body)               |
-| `--data-urlencode` | Daten senden + automatisch kodiert     |
-| `-G`               | Daten als GET-Parameter anhängen       |
-| `-H`               | eigenen Header setzen                  |
-| `-b` / `--cookie`  | Cookie mitschicken (`-b "PHPSESSID=…"`)|
-| `-I` / `-v`        | nur Header / verbose                   |
-| `-o datei`         | Antwort speichern                      |
+| `-X`               | HTTP method                            |
+| `-d`               | send data (POST body)                  |
+| `--data-urlencode` | send data + auto-encoded               |
+| `-G`               | append data as GET parameters          |
+| `-H`               | set a custom header                    |
+| `-b` / `--cookie`  | send a cookie (`-b "PHPSESSID=…"`)     |
+| `-I` / `-v`        | headers only / verbose                 |
+| `-o file`          | save the response                      |
 
-> [!tip] `-b PHPSESSID` – authentifizierte Requests
-> Nach einem Login hält der Server die Session über das Cookie `PHPSESSID`. Mit `-b "PHPSESSID=<wert>"` sprichst du geschützte Seiten (Dashboard etc.) an, als wärst du eingeloggt – den Wert aus **DevTools → Application/Storage → Cookies** oder dem Login-Response kopieren. Zentral für Log Poisoning.
+> [!tip] `-b PHPSESSID` – authenticated requests
+> After a login the server keeps the session via the `PHPSESSID` cookie. With `-b "PHPSESSID=<value>"` protected pages (dashboard etc.) are addressed as if logged in – the value comes from **DevTools → Application/Storage → Cookies** or the login response. Central to log poisoning.
 
-> [!tip] LFI-Kombi
+> [!tip] LFI combo
 > `curl -G "URL" --data-urlencode "page=..." --data-urlencode "cmd=..."`
-> → nie wieder `%20`, `&` oder Quotes von Hand kodieren. (LFI)
+> → never encode `%20`, `&` or quotes by hand again. (LFI)

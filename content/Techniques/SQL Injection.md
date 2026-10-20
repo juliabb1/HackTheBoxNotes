@@ -4,27 +4,27 @@ aliases: [SQLi]
 ---
 # SQL Injection
 
-> Eigenen SQL-Code über ein Eingabefeld einschleusen, weil die Eingabe nicht sauber geprüft wird.
-## Folgen
-- **Login-Bypass**: Abfrage immer-wahr machen → `' OR 1=1 -- `
-- **Daten auslesen**: DB-Inhalte (User, Hashes) dumpen
-- **File Read**: mit **FILE**-Privileg Systemdateien lesen (`LOAD_FILE`)
-## Typen
-| Typ              | Prinzip                                        |
+> Injecting own SQL code through an input field because the input isn't validated properly.
+## Consequences
+- **Login bypass**: make the query always true → `' OR 1=1 -- `
+- **Data extraction**: dump DB contents (users, hashes)
+- **File read**: with the **FILE** privilege, read system files (`LOAD_FILE`)
+## Types
+| Type             | Principle                                      |
 | ---------------- | ---------------------------------------------- |
-| error-based      | DB-Fehler verraten Daten                       |
-| UNION-based      | eigene `SELECT`-Ausgabe anhängen (schnell)     |
-| boolean blind    | wahr/falsch an Seitenverhalten ablesen         |
-| time-based blind | wahr/falsch an Antwortzeit (`SLEEP`) – langsam |
-## Ablauf (automatisiert mit [[sqlmap]])
+| error-based      | DB errors reveal data                          |
+| UNION-based      | append an own `SELECT` output (fast)           |
+| boolean blind    | read true/false from page behavior             |
+| time-based blind | read true/false from response time (`SLEEP`) – slow |
+## Flow (automated with [[sqlmap]])
 ```bash
 sqlmap -r req.txt --batch --dbs                 # DBs
-sqlmap -r req.txt --batch --is-dba --privileges # Rechte (FILE?)
-sqlmap -r req.txt --batch --file-read=/pfad     # Datei lesen
-sqlmap -r req.txt --batch -D db -T tab --dump    # Daten auslesen
+sqlmap -r req.txt --batch --is-dba --privileges # privileges (FILE?)
+sqlmap -r req.txt --batch --file-read=/path     # read a file
+sqlmap -r req.txt --batch -D db -T tab --dump    # extract data
 ```
 
-> [!tip] File Read als Pivot
-> FILE-Recht + Config-Dateien (z.B. `nginx`) = oft der Weg zu versteckten vHosts oder Credentials, nicht nur zum DB-Dump.
+> [!tip] File read as a pivot
+> FILE privilege + config files (e.g. `nginx`) = often the path to hidden vHosts or credentials, not just a DB dump.
 
 Tool: [[sqlmap]]

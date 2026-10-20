@@ -2,16 +2,16 @@
 title: HackTheBox Notes
 ---
 
-Persönliche Notizen zu HackTheBox-Maschinen, Techniken, Tools und Linux-Grundlagen.
+Personal notes on HackTheBox machines, techniques, tools and Linux basics.
 
-> [!warning] Hinweis
-> Flags und die Attacker-IP sind bewusst durch Platzhalter ersetzt.
-> Die Inhalte basieren auf eigene Notizen und wurden mithilfe von KI strukturiert und zum besseren Verständnis umformuliert, anschließend von mir geprüft.
+> [!warning] Note
+> Flags and the attacker IP are deliberately replaced with placeholders.
+> The contents are based on my own notes and were structured and rephrased for clarity with the help of AI, then reviewed by me.
 
 
-## Struktur
+## Structure
 
-- **Machines** — Writeups pro Box
-- **Techniques** — Angriffsmethoden
-- **Tools** — Werkzeuge
-- **Basics** — Linux-Grundlagen
+- **Machines** — writeups per box
+- **Techniques** — attack methods
+- **Tools** — tooling
+- **Basics** — Linux fundamentals

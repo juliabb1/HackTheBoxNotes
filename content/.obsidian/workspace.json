@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Machines/LinkItUp.md",
+                "file": "dirtyNotes/Reset.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "LinkItUp"
+              "title": "Reset"
             }
           }
         ]
@@ -190,11 +190,15 @@
   },
   "active": "9687c7abc6ad41be",
   "lastOpenFiles": [
+    "Machines/Reset.md",
+    "dirtyNotes/Reset.md",
+    "private/README.md",
+    "dirtyNotes/Trick.md",
+    "dirtyNotes/LinkItUp.md",
+    "Machines/Trick.md",
+    "Machines/LinkItUp.md",
     "Techniques/NTLM Hash Leak.md",
     "Techniques/SMB Enumeration.md",
-    "Machines/LinkItUp.md",
-    "Machines/Trick.md",
-    "Machines/Reset.md",
     "Techniques/R-Services Abuse.md",
     "Machines/Reset.md.tmp.41764.5f44985c2eac",
     "Machines/Reset.md.tmp.41764.3586062d628c",
@@ -222,10 +226,6 @@
     "Techniques/SQL Injection.md",
     "Techniques/Reverse Shell.md",
     "Techniques/Password Reset Abuse.md",
-    "Untitled.canvas",
-    "Techniques/tmux Hijacking.md",
-    "Techniques/SUID Abuse.md",
-    "Tools/rlogin.md",
-    "Tools/grep.md"
+    "Untitled.canvas"
   ]
 }

@@ -4,23 +4,23 @@ aliases: [Insecure Password Reset]
 ---
 # Password Reset Abuse
 
-> Eine „Passwort vergessen"-Funktion generiert ein neues Passwort serverseitig – und gibt es versehentlich in der **HTTP-Response** zurück, statt es nur per Mail zu verschicken.
+> A "forgot password" function generates a new password server-side – and accidentally returns it in the **HTTP response** instead of only sending it by mail.
 
-## Finden
-- Reset-Formular suchen (z.B. `reset.php`, „Forgot password").
-- Reset für einen bekannten/geratenen Usernamen anstoßen (`admin`).
-- Response im Browser prüfen: **DevTools → Network → der POST-Request → Response**.
+## Finding
+- Look for a reset form (e.g. `reset.php`, "Forgot password").
+- Trigger a reset for a known/guessed username (`admin`).
+- Check the response in the browser: **DevTools → Network → the POST request → Response**.
 
-## Ausnutzen
+## Exploiting
 ```
 new_password: 24bc0464
 ```
-=> Das neue Passwort steht im Klartext in der Antwort. Damit direkt einloggen:
-- Username: `admin`
-- Passwort: der geleakte Wert
+=> The new password is in the response in plaintext. Log in with it directly:
+- username: `admin`
+- password: the leaked value
 
-> [!note] Warum das klappt
-> Entwickler-Bug: der Reset-Flow soll das Passwort nur setzen/mailen, rendert es aber zusätzlich in die Seite. Die Mail kommt nie an → man liest es direkt mit.
+> [!note] Why this works
+> Developer bug: the reset flow should only set/mail the password, but it additionally renders it into the page. The mail never arrives → it is read directly from the response.
 
 
 Tool: [[curl]]

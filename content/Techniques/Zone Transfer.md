@@ -4,28 +4,28 @@ aliases: [AXFR, DNS Zone Transfer]
 ---
 # Zone Transfer
 
-> Ein DNS-Server kopiert seine komplette **Zone** (Namensliste) an einen anderen Server. Bei Fehlkonfiguration für jeden abfragbar → alle Hostnamen + versteckte Subdomains auf einen Schlag.
+> A DNS server copies its entire **zone** (name list) to another server. If misconfigured, it's queryable by anyone → all hostnames + hidden subdomains in one shot.
 
-## Woran erkennen?
-- DNS läuft normal über **UDP/53** (klein, schnell).
-- `53/tcp open` im [[nmap]]-Scan => TCP wird u.a. für große Antworten (= ganze Zone) genutzt => Transfer könnte erlaubt sein.
+## How to recognize it?
+- DNS normally runs over **UDP/53** (small, fast).
+- `53/tcp open` in the [[nmap]] scan => TCP is used, among other things, for large responses (= a whole zone) => a transfer might be allowed.
 
-## Ablauf
-1. Domainname finden (Reverse Lookup):
+## Flow
+1. Find the domain name (reverse lookup):
 ```bash
-dig -x <ziel-ip> @<ziel-ip>     # PTR-Record => z.B. trick.htb
+dig -x <target-ip> @<target-ip>     # PTR record => e.g. trick.htb
 ```
-2. Zone Transfer ziehen:
+2. Pull the zone transfer:
 ```bash
-dig axfr <domain> @<ziel-ip>
+dig axfr <domain> @<target-ip>
 ```
-3. Gefundene Subdomains in `/etc/hosts` eintragen → im Browser erreichbar.
+3. Add the found subdomains to `/etc/hosts` → reachable in the browser.
 
-## Erwartung
-- **Erfolg** → Liste aus `A`/`NS`/`SOA`-Records (vHosts = die `A`-Einträge).
-- **Dicht** → `Transfer failed.`
+## Expectation
+- **Success** → list of `A`/`NS`/`SOA` records (vHosts = the `A` entries).
+- **Locked down** → `Transfer failed.`
 
-> [!note] DNS ≠ Webserver
-> Der Zone Transfer zeigt nur, was der **DNS** kennt. Ein vHost kann im Webserver (`server_name`) konfiguriert sein **ohne** DNS-Eintrag → nur über die Webserver-Config auffindbar.
+> [!note] DNS ≠ web server
+> The zone transfer only shows what the **DNS** knows. A vHost can be configured in the web server (`server_name`) **without** a DNS record → discoverable only via the web server config.
 
 Tool: [[dig]]

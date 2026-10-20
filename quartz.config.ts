@@ -15,7 +15,7 @@ const config: QuartzConfig = {
     analytics: null,
     locale: "de-DE",
     baseUrl: "juliabb1.github.io/HackTheBoxNotes",
-    ignorePatterns: ["private", "templates", "Templates", ".obsidian"],
+    ignorePatterns: ["dirtyNotes", "templates", "Templates", ".obsidian"],
     defaultDateType: "modified",
     theme: {
       fontOrigin: "googleFonts",

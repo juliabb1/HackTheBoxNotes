@@ -3,20 +3,20 @@ tags: [tool, recon, dns]
 ---
 # dig
 
-> *Domain Information Groper* – befragt DNS-Server direkt.
+> *Domain Information Groper* – queries DNS servers directly.
 
-## Verwendung
+## Usage
 ```bash
 dig <name>
-dig axfr <domain> @<ziel-ip>   # Zone Transfer
+dig axfr <domain> @<target-ip>   # zone transfer
 ```
 
-## Befehle
-| Befehl                        | Was es tut                            |
+## Commands
+| Command                       | What it does                          |
 | ----------------------------- | ------------------------------------- |
-| `dig google.com`              | Name → IP (A-Record)                  |
-| `dig -x 1.2.3.4`              | IP → Name (Reverse)                   |
-| `dig google.com MX`           | Mailserver der Domain                 |
-| `dig google.com NS`           | zuständige DNS-Server                 |
-| `dig @8.8.8.8 google.com`     | frag gezielt *diesen* Server (`@`)    |
-| `dig axfr trick.htb @ziel-ip` | **Zone Transfer**                     |
+| `dig google.com`              | name → IP (A record)                  |
+| `dig -x 1.2.3.4`              | IP → name (reverse)                   |
+| `dig google.com MX`           | mail servers of the domain            |
+| `dig google.com NS`           | responsible DNS servers               |
+| `dig @8.8.8.8 google.com`     | query *this* server specifically (`@`) |
+| `dig axfr trick.htb @target-ip` | **zone transfer**                   |

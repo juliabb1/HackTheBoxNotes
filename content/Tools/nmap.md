@@ -3,18 +3,18 @@ tags: [tool, recon]
 ---
 # nmap
 
-> Scanner, der offene Ports/Dienste auf einem Ziel findet.
+> Scanner that finds open ports/services on a target.
 
-## Verwendung
+## Usage
 ```bash
-nmap -sCV <ziel-ip>
+nmap -sCV <target-ip>
 ```
 
 ## Flags
-| Flag   | Bedeutung                                               |
+| Flag   | Meaning                                                 |
 | ------ | ------------------------------------------------------- |
-| `-sV`  | Software + Version pro Port (z.B. „Apache 2.4.52")      |
-| `-sC`  | Standard-Skripte: Zusatzinfos & offensichtliche Lücken  |
-| `-sCV` | beides kombiniert = typischer erster Scan               |
-| `-p-`  | alle 65535 Ports                                        |
-| `-sU`  | UDP-Scan                                                 |
+| `-sV`  | software + version per port (e.g. "Apache 2.4.52")      |
+| `-sC`  | default scripts: extra info & obvious weaknesses        |
+| `-sCV` | both combined = the typical first scan                  |
+| `-p-`  | all 65535 ports                                         |
+| `-sU`  | UDP scan                                                 |

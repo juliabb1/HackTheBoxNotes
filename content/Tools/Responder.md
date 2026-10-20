@@ -4,23 +4,23 @@ aliases: [responder]
 ---
 # Responder
 
-> Netzwerk-Sniffing-Tool, das SMB/HTTP/LLMNR-Auth von Windows-Clients abfängt und **NTLM-Hashes** mitschneidet. Öffnet dafür lauschende Ports auf deinem Interface.
+> Network sniffing tool that intercepts SMB/HTTP/LLMNR auth from Windows clients and captures **NTLM hashes**. It opens listening ports on the local interface for this.
 
-## Verwendung
+## Usage
 ```bash
 responder -I tun0 -P
 ```
 
 ## Flags
-| Flag        | Bedeutung                              |
+| Flag        | Meaning                                |
 | ----------- | -------------------------------------- |
-| `-I <if>`   | Interface (z.B. `tun0` = VPN)          |
-| `-P`        | Proxy-Auth erzwingen                   |
-| `-w`        | WPAD-Server                            |
+| `-I <if>`   | interface (e.g. `tun0` = VPN)          |
+| `-P`        | force proxy auth                       |
+| `-w`        | WPAD server                            |
 | `-v`        | verbose                                |
 
 ## Output
-- Gefangene Hashes landen unter `/usr/share/responder/logs/` (und im Terminal).
-- Format = **NetNTLMv2** → direkt in john/hashcat.
+- Captured hashes land under `/usr/share/responder/logs/` (and in the terminal).
+- Format = **NetNTLMv2** → straight into john/hashcat.
 
-=> Technik: NTLM Hash Leak
+=> Technique: NTLM Hash Leak

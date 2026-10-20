@@ -4,32 +4,32 @@ aliases: [LFI]
 ---
 # Local File Inclusion (LFI)
 
-> Eine Seite lädt Dateien anhand eines Parameters (`?page=about.php`). Missbrauch: nicht vorgesehene lokale Dateien einbinden.
+> A page loads files based on a parameter (`?page=about.php`). Abuse: include local files that weren't intended.
 
-## Finden
-- Reiter durchklicken, URL beobachten → Parameter, der eine Datei lädt (`page=`, `file=`, `include=`, `view=`).
+## Finding
+- Click through the tabs, watch the URL → a parameter that loads a file (`page=`, `file=`, `include=`, `view=`).
 
 ## Directory Traversal
 ```
 ?page=../../../../etc/passwd
 ```
-| Schreibweise | Zweck                                                             |
-| ------------ | ----------------------------------------------------------------- |
-| `../`        | ein Ordner hoch (überzählige schaden nicht)                       |
-| `....//`     | Nested Traversal → Filter entfernt inneres `../`, gültiges bleibt |
-| `/etc/passwd`| absoluter Pfad (falls kein Traversal nötig)                       |
+| Notation     | Purpose                                                            |
+| ------------ | ------------------------------------------------------------------ |
+| `../`        | up one directory (extra ones don't hurt)                           |
+| `....//`     | nested traversal → filter removes inner `../`, valid one remains   |
+| `/etc/passwd`| absolute path (if no traversal is needed)                          |
 
-## Nützliche Zieldateien
-| Datei                              | Info                                    |
+## Useful target files
+| File                               | Info                                    |
 | ---------------------------------- | --------------------------------------- |
-| `/etc/passwd`                      | alle User → [[etc-passwd]]              |
+| `/etc/passwd`                      | all users → [[etc-passwd]]              |
 | `/etc/nginx/sites-enabled/default` | vHosts (`server_name`)                  |
-| `/var/mail/<user>`                 | Mailbox → Mail/Log Poisoning            |
-| `/var/log/apache2/access.log`      | Apache-Log → poisonbar (User-Agent)     |
+| `/var/mail/<user>`                 | mailbox → mail/log poisoning            |
+| `/var/log/apache2/access.log`      | Apache log → poisonable (User-Agent)    |
 
-=> Vollständige Liste + warum diese Pfade immer gleich liegen: [[Linux Standard-Pfade]].
+=> Full list + why these paths always sit in the same place: [[Linux Standard Paths]].
 
 ## LFI → RCE
-Wenn eine einbindbare Datei **steuerbaren Inhalt** hat (Mail, Log), kann man dort PHP platzieren → wird beim Einbinden ausgeführt (Mail/Log Poisoning).
+If an includable file has **controllable content** (mail, log), PHP can be placed there → it's executed on inclusion (mail/log poisoning).
 
 Tool: [[curl]]

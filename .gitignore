@@ -13,3 +13,7 @@ Thumbs.db
 content/.obsidian/workspace.json
 content/.obsidian/workspace-mobile.json
 content/.obsidian/cache
+
+# Private dirty notes: local only — never pushed to GitHub, never built into the site.
+# (Folder name "private" is also in quartz.config.ts ignorePatterns → excluded from local previews too.)
+content/dirtyNotes/

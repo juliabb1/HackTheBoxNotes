@@ -3,28 +3,28 @@ tags: [tool, text, enumeration]
 ---
 # grep
 
-> Durchsucht Text/Dateien zeilenweise nach einem Muster (Regex) – filtert Rauschen aus Outputs, Logs und Configs.
+> Searches text/files line by line for a pattern (regex) – filters noise out of outputs, logs and configs.
 
-## Verwendung
+## Usage
 ```bash
-grep "admin" datei                          # Zeilen mit "admin"
-grep -i "pass" datei                        # Groß/Klein egal
-grep -r "password" /var/www                 # rekursiv im Ordner
-grep -v "foo" datei                         # invertiert: Zeilen OHNE "foo"
-grep -E 'foo|bar' datei                     # erweiterte Regex (ODER mit |)
-curl http://ziel.htb | grep -i title        # Output einer Pipe filtern
+grep "admin" file                           # lines containing "admin"
+grep -i "pass" file                         # case-insensitive
+grep -r "password" /var/www                 # recursive in a folder
+grep -v "foo" file                          # inverted: lines WITHOUT "foo"
+grep -E 'foo|bar' file                      # extended regex (OR with |)
+curl http://target.htb | grep -i title      # filter the output of a pipe
 ```
 
 ## Flags
-| Flag | Bedeutung                                   |
+| Flag | Meaning                                     |
 | ---- | ------------------------------------------- |
-| `-i` | Groß-/Kleinschreibung ignorieren            |
-| `-v` | **invertieren** – nur Zeilen ohne Treffer   |
-| `-E` | erweiterte Regex (`\|`, `+`, `()` ohne `\`) |
-| `-r` | rekursiv durch Verzeichnisse                |
-| `-n` | Zeilennummern mitanzeigen                   |
-| `-o` | nur den Treffer statt der ganzen Zeile      |
-| `-c` | nur Anzahl der Treffer                      |
+| `-i` | ignore case                                 |
+| `-v` | **invert** – only lines without a match     |
+| `-E` | extended regex (`\|`, `+`, `()` without `\`) |
+| `-r` | recursively through directories             |
+| `-n` | also show line numbers                      |
+| `-o` | only the match instead of the whole line    |
+| `-c` | only the count of matches                   |
 
-> [!tip] Typischer Einsatz
-> User-Enumeration `grep -vE 'nologin|false' /etc/passwd` (Dienstkonten rauswerfen) → erklärt in [[etc-passwd]].
+> [!tip] Typical use
+> User enumeration `grep -vE 'nologin|false' /etc/passwd` (discard service accounts) → explained in [[etc-passwd]].

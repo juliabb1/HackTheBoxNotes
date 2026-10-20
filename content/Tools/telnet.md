@@ -3,26 +3,26 @@ tags: [tool, network]
 ---
 # telnet
 
-> Verbindet sich zu einem **Port** und schickt **rohen Text**. netcat macht dasselbe moderner (`nc <ip> <port>`).
+> Connects to a **port** and sends **raw text**. netcat does the same thing more modernly (`nc <ip> <port>`).
 
-## Verwendung
+## Usage
 ```bash
 telnet <ip> <port>
 ```
-| Port | Dienst    | Zweck                   |
+| Port | Service   | Purpose                 |
 | ---- | --------- | ----------------------- |
-| 25   | SMTP/Mail | Mail von Hand schreiben |
-| 80   | HTTP      | HTTP-Request von Hand   |
-| 110  | POP3      | Mails abrufen           |
+| 25   | SMTP/mail | write mail by hand      |
+| 80   | HTTP      | HTTP request by hand    |
+| 110  | POP3      | retrieve mail           |
 
-## SMTP-Befehle (Port 25)
-| Befehl        | Bedeutung                            |
+## SMTP commands (port 25)
+| Command       | Meaning                              |
 | ------------- | ------------------------------------ |
-| `HELO`        | Begrüßung                            |
-| `MAIL FROM`   | Absender (frei erfindbar)            |
-| `RCPT TO`     | Empfänger                            |
-| `DATA`        | „jetzt kommt der Mailinhalt"         |
-| `.` (alleine) | „Mail fertig"                        |
-| `QUIT`        | Verbindung beenden                   |
+| `HELO`        | greeting                             |
+| `MAIL FROM`   | sender (freely made up)              |
+| `RCPT TO`     | recipient                            |
+| `DATA`        | "here comes the mail body"           |
+| `.` (alone)   | "mail finished"                      |
+| `QUIT`        | close the connection                 |
 
-=> Anwendung: Mail/Log Poisoning
+=> Application: Mail/Log Poisoning

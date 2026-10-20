@@ -4,28 +4,28 @@ aliases: [tmux Session Hijacking]
 ---
 # tmux Hijacking
 
-> **tmux** (terminal multiplexer) verwaltet Terminal-Sitzungen, die im Hintergrund weiterlaufen, auch wenn man sich „detached". Jede Session gehört einem User und läuft mit dessen Rechten. Darf ich auf den **Socket** einer fremden (z.B. root-)Session zugreifen, kann ich mich dranhängen und darin als dieser User Befehle ausführen.
+> **tmux** (terminal multiplexer) manages terminal sessions that keep running in the background even after "detaching". Each session belongs to a user and runs with their permissions. If I can access the **socket** of someone else's (e.g. root's) session, I can attach to it and run commands in it as that user.
 
-## Warum gefährlich
-- tmux legt pro User eine Socket-Datei an: `/tmp/tmux-<uid>/default`.
-- Sind die Rechte auf dem Socket zu offen (oder ist es ein Dienstkonto, in dem ich schon stecke), kann ich attachen.
-- Oft findet man in der gekaperten Session noch **Historie/Klartext-Passwörter** aus vorherigen Befehlen.
-- Die Session läuft mit den Rechten des Users, dem die Session gehört
+## Why it's dangerous
+- tmux creates a socket file per user: `/tmp/tmux-<uid>/default`.
+- If the permissions on the socket are too open (or it's a service account I'm already inside), I can attach.
+- The hijacked session often still contains **history/plaintext passwords** from previous commands.
+- The session runs with the permissions of the user who owns it.
 
-## Finden
+## Finding
 ```bash
-# wer ist eingeloggt und was tut er (Spalte WHAT)
+# who is logged in and what are they doing (WHAT column)
 w
 # USER  TTY    FROM            ... WHAT
-# sadm  pts/3  tmux(1141).%0   ... -bash   <- läuft in einer tmux-Session
+# sadm  pts/3  tmux(1141).%0   ... -bash   <- running in a tmux session
 
-# Socket suchen
+# find the socket
 ls -la /tmp/tmux-*/
 # /tmp/tmux-1001/default
 ```
 
-## Attachen
+## Attaching
 ```bash
 tmux -S /tmp/tmux-1001/default attach
 ```
-- `-S <socket>` = „benutze **diesen** Socket" statt des eigenen.
+- `-S <socket>` = "use **this** socket" instead of the default one.

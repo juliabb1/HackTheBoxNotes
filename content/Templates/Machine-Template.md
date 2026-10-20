@@ -5,13 +5,13 @@ difficulty:
 cve:
 techniques: []
 ---
-# <Name> (<Plattform>)
+# <Name> (<Platform>)
 
-| Feld               | Wert                          |
+| Field              | Value                         |
 | ------------------ | ----------------------------- |
 | OS                 |                               |
 | Difficulty         |                               |
-| Box IP             | ` ` (ändert sich bei Redeploy)|
+| Box IP             | ` ` (changes on redeploy)     |
 | Attacker IP (tun0) | ` `                           |
 
 > [!info] Kill Chain
@@ -23,11 +23,11 @@ techniques: []
 - `nmap -sCV <ip>` →
 
 # 2 · Foothold
-## 2.x <Technik> → [[…]]
+## 2.x <Technique> → [[…]]
 ```bash
 ```
 
-## User-Flag
+## User flag
 ```bash
 ```
 
@@ -37,11 +37,11 @@ techniques: []
 ```bash
 ```
 
-## Root-Flag
+## Root flag
 ```bash
 ```
 
 ---
 
-## Notizen / Rabbit Holes
+## Notes / Rabbit Holes
 -

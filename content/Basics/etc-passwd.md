@@ -1,48 +1,48 @@
 ---
 tags: [basics, linux]
-aliases: [/etc/passwd, passwd, Dienstkonten]
+aliases: [/etc/passwd, passwd, Service Accounts]
 ---
 # /etc/passwd
 
-> Weltlesbare Datei mit **allen Benutzerkonten** des Systems – eine Zeile pro User. Erste Anlaufstelle bei der User-Enumeration.
+> World-readable file with **all user accounts** on the system – one line per user. The first stop for user enumeration.
 
-## Aufbau einer Zeile
+## Structure of a line
 ```
 sadm:x:1001:1001:,,,:/home/sadm:/bin/bash
- │   │  │    │    │      │          └─ Login-Shell
- │   │  │    │    │      └─ Home-Verzeichnis
- │   │  │    │    └─ GECOS (Klartext-Infos: Name, Büro, …)
- │   │  │    └─ GID (primäre Gruppe)
+ │   │  │    │    │      │          └─ login shell
+ │   │  │    │    │      └─ home directory
+ │   │  │    │    └─ GECOS (plaintext info: name, office, …)
+ │   │  │    └─ GID (primary group)
  │   │  └─ UID
- │   └─ Passwort-Platzhalter ("x" = echter Hash in /etc/shadow)
- └─ Username
+ │   └─ password placeholder ("x" = real hash in /etc/shadow)
+ └─ username
 ```
 
-| Feld     | Bedeutung                                                       |
+| Field    | Meaning                                                         |
 | -------- | --------------------------------------------------------------- |
-| Username | Loginname                                                       |
-| `x`      | Passwort liegt in `/etc/shadow` (nur root lesbar)               |
-| UID      | User-ID. `0` = root, `<1000` = System, `≥1000` = echte User     |
-| GID      | primäre Gruppe                                                  |
-| GECOS    | freie Infos (oft leer / `,,,`)                                  |
-| Home     | Heimatverzeichnis                                               |
-| Shell    | was beim Login startet → **entscheidend** (s.u.)                |
+| username | login name                                                     |
+| `x`      | password lives in `/etc/shadow` (root-readable only)           |
+| UID      | user ID. `0` = root, `<1000` = system, `≥1000` = real users     |
+| GID      | primary group                                                  |
+| GECOS    | free-form info (often empty / `,,,`)                           |
+| home     | home directory                                                 |
+| shell    | what starts on login → **decisive** (see below)                |
 
-## Login-User vs. Dienstkonten
-Das letzte Feld (Shell) verrät, ob sich jemand einloggen *kann*:
+## Login users vs. service accounts
+The last field (shell) reveals whether someone *can* log in:
 
 ```
-root:x:0:0:root:/root:/bin/bash            <- echter User (Shell)
-www-data:x:33:33:...:/usr/sbin/nologin      <- Dienstkonto
-daemon:x:1:1:...:/bin/false                 <- Dienstkonto
-sadm:x:1001:1001:,,,:/home/sadm:/bin/bash   <- echter User (Shell)
+root:x:0:0:root:/root:/bin/bash            <- real user (shell)
+www-data:x:33:33:...:/usr/sbin/nologin      <- service account
+daemon:x:1:1:...:/bin/false                 <- service account
+sadm:x:1001:1001:,,,:/home/sadm:/bin/bash   <- real user (shell)
 ```
 
-> [!info] Was sind Dienstkonten?
-> **`/usr/sbin/nologin`** und **`/bin/false`** sind „tote" Shells, die jeden Login sofort beenden. Solche Konten existieren nur, damit ein **Programm unter eigenem User** laufen kann (Apache = `www-data`, SSH = `sshd`, …) – nicht zum Einloggen. Für Angriffe meist uninteressant.
+> [!info] What are service accounts?
+> **`/usr/sbin/nologin`** and **`/bin/false`** are "dead" shells that terminate any login immediately. Such accounts exist only so that a **program can run under its own user** (Apache = `www-data`, SSH = `sshd`, …) – not for logging in. Usually uninteresting for attacks.
 
-## Echte User herausfiltern
+## Filtering out real users
 ```bash
 grep -vE 'nologin|false' /etc/passwd
 ```
-`-v` wirft die Zeilen mit „toter" Shell weg → übrig bleiben nur Accounts mit echter Shell (`/bin/bash`), die **lohnenden Ziele**.
+`-v` discards the lines with a "dead" shell → what remains are only accounts with a real shell (`/bin/bash`), the **worthwhile targets**.

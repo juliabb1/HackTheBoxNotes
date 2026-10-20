@@ -3,24 +3,24 @@ tags: [tool, recon, smb]
 ---
 # smbclient
 
-> Zugriff auf Windows-Netzwerkfreigaben über das SMB-Protokoll.
+> Access Windows network shares over the SMB protocol.
 
-## Verwendung
+## Usage
 ```bash
-smbclient -L //<ziel>/ -N                       # Shares auflisten (anonym)
-smbclient //<ziel>/share -N                     # Share betreten
-smbclient //<ziel>/share -N -c 'put datei.lnk'  # Datei hochladen (one-shot)
+smbclient -L //<target>/ -N                     # list shares (anonymous)
+smbclient //<target>/share -N                   # enter a share
+smbclient //<target>/share -N -c 'put file.lnk' # upload a file (one-shot)
 ```
 
 ## Flags
-| Flag          | Bedeutung                        |
+| Flag          | Meaning                          |
 | ------------- | -------------------------------- |
-| `-L`          | List – Shares auflisten          |
-| `-N`          | No Password (anonym)             |
-| `-U user`     | als User authentifizieren        |
-| `-c '...'`    | Befehl direkt ausführen          |
+| `-L`          | List – list shares               |
+| `-N`          | No password (anonymous)          |
+| `-U user`     | authenticate as a user           |
+| `-c '...'`    | run a command directly           |
 
-## Im Share
-`ls`, `get <datei>`, `put <datei>`, `cd <ordner>`
+## Inside a share
+`ls`, `get <file>`, `put <file>`, `cd <folder>`
 
-=> Technik: SMB Enumeration
+=> Technique: SMB Enumeration
