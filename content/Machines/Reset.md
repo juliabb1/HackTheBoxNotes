@@ -1,7 +1,18 @@
 ---
-tags: [htb, linux, easy, writeup]
+tags:
+  - htb
+  - linux
+  - easy
+  - writeup
 cve:
-techniques: [password-reset, log-poisoning, lfi, reverse-shell, r-services, tmux-hijacking, sudo-abuse]
+techniques:
+  - password-reset
+  - log-poisoning
+  - lfi
+  - reverse-shell
+  - r-services
+  - tmux-hijacking
+  - sudo-abuse
 ---
 # Reset (Linux)
 

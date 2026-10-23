@@ -1,7 +1,17 @@
 ---
-tags: [htb, linux, easy, writeup]
+tags:
+  - htb
+  - linux
+  - easy
+  - writeup
 cve: CVE-2022-28468
-techniques: [zone-transfer, sqli, lfi, mail-poisoning, fail2ban, suid]
+techniques:
+  - zone-transfer
+  - sqli
+  - lfi
+  - mail-poisoning
+  - fail2ban
+  - suid
 ---
 # Trick (Linux)
 
